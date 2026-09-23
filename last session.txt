@@ -1,0 +1,3 @@
+--resume 8a3d75a7-aa80-4126-87c9-292319371b9e
+
+ok, no mobile e tablet, o header tem q sumir pra cima ao rolar pagina pra baixo mais de 300px, e voltar imediatamente apos rolar pra cima novamente. e assim sucessivamente. e outra, pq alguns conteudos como da pagina 14, estao sendo cortados pelo photo-grid na frente? parece q alguns paragrafos acima ta entrado por baixo do grid
