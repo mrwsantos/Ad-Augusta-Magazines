@@ -95,20 +95,46 @@
 		if (e.key === 'Escape') closeSheet();
 	});
 
+	// scrollspy: the active page is whichever section's top has most recently
+	// crossed a reference line near the top of the viewport. A fixed set of
+	// IntersectionObserver thresholds (0.25/0.5/0.75) only fires when a
+	// section's visible ratio crosses one of those exact values — for very
+	// tall, photo-heavy pages (spanning several viewport heights) the ratio
+	// can drift for a long time without ever crossing a threshold, so the
+	// pager silently stops updating while scrolling through them.
 	var sections = PAGES.map(function (p) { return document.getElementById(p.id); }).filter(Boolean);
-	if ('IntersectionObserver' in window && sections.length) {
-		var observer = new IntersectionObserver(function (entries) {
-			var best = null;
-			entries.forEach(function (entry) {
-				if (entry.isIntersecting && (!best || entry.intersectionRatio > best.intersectionRatio)) {
-					best = entry;
+	if (sections.length) {
+		var REF_Y = 120;
+
+		function computeActiveIndex() {
+			var active = 0;
+			for (var i = 0; i < sections.length; i++) {
+				if (sections[i].getBoundingClientRect().top <= REF_Y) {
+					active = i;
+				} else {
+					break;
 				}
-			});
-			if (best) {
-				var idx = sections.indexOf(best.target);
-				if (idx > -1) setActive(idx);
 			}
-		}, { threshold: [0.25, 0.5, 0.75] });
-		sections.forEach(function (s) { observer.observe(s); });
+			return active;
+		}
+
+		var scrollTicking = false;
+		function onScroll() {
+			scrollTicking = false;
+			setActive(computeActiveIndex());
+		}
+		window.addEventListener('scroll', function () {
+			if (!scrollTicking) {
+				requestAnimationFrame(onScroll);
+				scrollTicking = true;
+			}
+		}, { passive: true });
+		window.addEventListener('resize', function () {
+			if (!scrollTicking) {
+				requestAnimationFrame(onScroll);
+				scrollTicking = true;
+			}
+		});
+		setActive(computeActiveIndex());
 	}
 })();
