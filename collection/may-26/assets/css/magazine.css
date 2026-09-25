@@ -835,14 +835,13 @@ main {
 }
 
 @media (min-width: 900px) {
-  #page-15 .masthead-grid {
+  #page-13 .masthead-grid {
     display: flex;
     flex-direction: column;
   }
 }
 
-#page-13 h3,
-#page-14 h3 {
+#page-12 h3 {
   margin-top: 0px;
 }
 
