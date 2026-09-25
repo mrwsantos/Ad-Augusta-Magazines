@@ -106,7 +106,16 @@
 	if (sections.length) {
 		var REF_Y = 120;
 
+		var main = document.querySelector('main');
+		var desktopMq = window.matchMedia('(min-width: 900px)');
+
 		function computeActiveIndex() {
+			// desktop: horizontal slider, the window itself never scrolls
+			if (desktopMq.matches && main) {
+				var w = main.clientWidth || 1;
+				var i = Math.round(main.scrollLeft / w);
+				return Math.max(0, Math.min(sections.length - 1, i));
+			}
 			var active = 0;
 			for (var i = 0; i < sections.length; i++) {
 				if (sections[i].getBoundingClientRect().top <= REF_Y) {
@@ -129,6 +138,14 @@
 				scrollTicking = true;
 			}
 		}, { passive: true });
+		if (main) {
+			main.addEventListener('scroll', function () {
+				if (!scrollTicking) {
+					requestAnimationFrame(onScroll);
+					scrollTicking = true;
+				}
+			}, { passive: true });
+		}
 		window.addEventListener('resize', function () {
 			if (!scrollTicking) {
 				requestAnimationFrame(onScroll);

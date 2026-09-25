@@ -48,6 +48,11 @@ h3 {
   line-height: 1.15;
 }
 
+h3{
+  font-family: "Roboto", Georgia, serif;
+
+}
+
 a {
   color: inherit;
 }
@@ -73,8 +78,10 @@ img {
 
 /* ---------- header ---------- */
 .site-header {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 50;
   display: flex;
   flex-direction: column;
@@ -93,8 +100,8 @@ img {
 }
 .menu-toggle {
   border: none;
-  background: var(--navy);
-  color: #fff;
+  background: #eaebec;
+  color: var(--navy);
   font-weight: 600;
 
   height: 100px;
@@ -139,6 +146,9 @@ img {
   letter-spacing: 10%;
 }
 
+.menu-toggle .hamburger svg *{fill: var(--navy);}
+
+
 .header-wrapper {
   display: flex;
   align-items: center;
@@ -151,6 +161,25 @@ img {
 }
 .header-wrapper.opened .brand {
   color: #fff;
+}
+
+/* cover (page 1): only the menu toggle is shown, no grey bar */
+.site-header.on-cover {
+  background: transparent;
+}
+.header-wrapper.on-cover {
+  justify-content: flex-end;
+}
+.header-wrapper.on-cover .brand,
+.header-wrapper.on-cover .header-category {
+  display: none !important;
+}
+.header-wrapper.on-cover .menu-toggle {
+  background: var(--navy);
+  color: #fff;
+}
+.header-wrapper.on-cover .menu-toggle .hamburger svg *{
+  fill: #fff
 }
 
 .header-category {
@@ -303,10 +332,22 @@ img {
 }
 
 /* ---------- spread / page shell ---------- */
+
 .spread {
   padding: 0 0 100px;
   border-bottom: 1px solid var(--line);
 }
+/* Old Boys' News section (pages 26-38) */
+.spread.old-boys {
+  background-color: #d0dfe0;
+}
+.spread.old-boys .page-kicker {
+  color: var(--navy-deep);
+}
+.spread.old-boys p{
+  color: var(--muted)
+}
+
 .spread .wrap {
   padding: var(--pad-y) var(--pad-x) 0;
   max-width: 1240px;
@@ -419,10 +460,42 @@ img {
   margin: var(--gap) 0;
   color: var(--navy-deep);
 }
+/* article: images wrapper (25%) on the left, text (75%) in a single flowing
+   column on the right. Mobile/tablet: text on top, images below, both 100%. */
 .article-columns {
-  columns: 1;
-  column-gap: var(--gap);
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
   /* margin-top: var(--gap); */
+}
+.article-columns > .article-text {
+  order: 1;
+}
+.article-columns > .article-images {
+  order: 2;
+}
+@media (min-width: 900px) {
+  .article-columns {
+    display: grid;
+    grid-template-columns: 25% 1fr;
+    column-gap: var(--gap);
+    row-gap: 0;
+    align-items: start;
+  }
+  .article-columns > .article-images {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .article-columns > .article-text {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .article-columns:not(:has(> .article-images)) {
+    grid-template-columns: 1fr;
+  }
+  .article-columns:not(:has(> .article-images)) > .article-text {
+    grid-column: 1;
+  }
 }
 .article-columns p {
   margin: 0 0 1em;
@@ -431,32 +504,20 @@ img {
   font-size: 18px;
   color: var(--navy);
   margin: 1.2em 0 10px;
-  break-after: avoid;
-}
-@media (min-width: 640px) {
-  .article-columns.cols-2 {
-    columns: 2;
-  }
 }
 
-@media (min-width: 640px) {
-  .article-columns.cols-3 {
-    columns: 2;
-  }
-}
-
-@media (min-width: 900px) {
-  .article-columns.cols-3 {
-    columns: 2;
-  }
+/* two article blocks side by side inside a masthead-grid would be too narrow
+   now that each one is itself a 25/75 layout — stack them */
+.masthead-grid:has(.article-columns) {
+  grid-template-columns: 1fr;
 }
 
 .pull-quote {
   font-family: "Roboto", serif;
   font-style: italic;
-  font-size: var(--fs-h2);
+  font-size: var(--fs-h4);
   line-height: 1.35;
-  color: var(--navy);
+  color: #fff;
   border-left: 3px solid var(--gold);
   padding-left: 1rem;
   margin: var(--gap) 0;
@@ -678,6 +739,34 @@ img {
   /* max-width: 46rem; */
 }
 
+/* photo-grids inside the article image wrapper always stack in one column,
+   whatever their count / custom layout class */
+.article-images .photo-grid {
+  margin: 0 0 20px !important;
+  max-width: none !important;
+}
+.article-images .photo-grid-wrap {
+  grid-template-columns: 1fr !important;
+  grid-template-rows: none !important;
+  grid-template-areas: none !important;
+  aspect-ratio: auto !important;
+}
+.article-images .photo-grid-wrap > * {
+  grid-area: auto !important;
+  grid-column: auto !important;
+  grid-row: auto !important;
+  align-self: auto !important;
+}
+.article-images .photo-grid-wrap img {
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 4/3 !important;
+  object-fit: cover;
+}
+.article-images .photo-grid-wrap .tall img {
+  aspect-ratio: 3/4 !important;
+}
+
 .tbc {
   display: inline-block;
   font-family: "Roboto", sans-serif;
@@ -717,12 +806,24 @@ img {
   color: var(--navy);
 }
 
+/* the header floats over the content: every page starts below it, except the
+   cover, which runs underneath the menu toggle */
+main {
+  padding-top: 100px;
+}
 #page-01 {
   display: flex;
   align-items: center;
   flex-direction: row;
   padding: 0;
   gap: 0 !important;
+  margin-top: -100px;
+}
+@media (min-width: 900px) {
+  #page-01 {
+    height: calc(100% + 100px) !important;
+    min-height: calc(100% + 100px) !important;
+  }
 }
 
 @media (max-width: 899px) {
@@ -1327,4 +1428,108 @@ article.arts-and-culture .page-kicker {
   justify-content: center;
   width: 50%;
   margin: 5px 0;
+}
+
+/* ---------- photo gallery lightbox ---------- */
+.photo-grid img,
+img.hero-photo {
+  cursor: zoom-in;
+}
+.photo-grid img:focus-visible,
+img.hero-photo:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 2px;
+}
+html.lb-open {
+  overflow: hidden;
+}
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(4, 22, 48, 0.94);
+  padding: 3.5rem 1rem 3rem;
+}
+.lightbox[hidden],
+.lightbox [hidden] {
+  display: none !important;
+}
+.lb-figure {
+  margin: 0;
+  max-width: min(1200px, 100%);
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+}
+.lb-img {
+  max-width: 100%;
+  max-height: calc(100vh - 12rem);
+  max-height: calc(100dvh - 12rem);
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 3px;
+  background: #0e2138;
+}
+.lb-caption {
+  max-width: 60rem;
+  color: #e6ecf3;
+  font-family: "Roboto", sans-serif;
+  font-size: var(--fs-body);
+  line-height: 1.5;
+  text-align: center;
+}
+.lb-count {
+  position: absolute;
+  bottom: 0.9rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--gold-light);
+  font-family: "Roboto", sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+}
+.lb-btn {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.8rem;
+  height: 2.8rem;
+  border: 1px solid var(--gold-light);
+  border-radius: 50%;
+  background: var(--navy-deep);
+  color: #fff;
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+  padding-bottom: 2px;
+}
+.lb-btn:hover,
+.lb-btn:focus-visible {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--navy);
+  outline: none;
+}
+.lb-close {
+  top: 0.8rem;
+  right: 0.8rem;
+  padding-top: 7px;
+  padding-bottom: 4px;
+}
+.lb-prev {
+  left: 0.8rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.lb-next {
+  right: 0.8rem;
+  top: 50%;
+  transform: translateY(-50%);
 }
