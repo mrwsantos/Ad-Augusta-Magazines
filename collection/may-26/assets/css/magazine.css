@@ -377,9 +377,10 @@ img {
 }
 .deck {
   font-size: var(--fs-deck);
-  font-style: italic;
   color: var(--muted);
   margin-top: 0.7rem;
+  font-size: 1rem;
+  text-transform: uppercase;
 }
 
 .hero-photo {
@@ -523,6 +524,14 @@ img {
   margin: var(--gap) 0;
   /* max-width: 34rem; */
 }
+
+@media (max-width: 900px)
+{
+.pull-quote{
+  color: var(--navy) !important;
+}  
+}
+
 .pull-quote cite {
   display: block;
   font-style: normal;
@@ -612,7 +621,7 @@ img {
   .photo-grid-wrap:has(> :is(img, .tall):nth-child(8)):not(
       :has(> :is(img, .tall):nth-child(9))
     ) {
-    grid-template-columns: repeat(8, 1fr);
+    grid-template-columns: repeat(4, 1fr);
   }
 
   /* manual column layouts: .grid-A-B-... = column 1 holds A photos, column 2
@@ -674,11 +683,6 @@ img {
   }
 
 
-
-
-
-
-
   .photo-grid-num {
     position: relative;
     width: 100%;
@@ -692,6 +696,8 @@ img {
     color: #fff;
     padding: 5px;
     font-size: 10px;
+
+    display: none !important;
   }
   .photo-grid-wrap.custom-2-row-6-col > :nth-child(1) {
     grid-area: one;
@@ -731,6 +737,91 @@ img {
   }
 }
 
+/* grid-8-img-1 / grid-8-2: unscoped (not gated to a min-width) so these two
+   galleries stay compact on mobile too, instead of falling back to 8
+   full-width stacked images and blowing well past 100vh */
+.photo-grid-wrap.grid-8-img-1 {
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  grid-template-rows: repeat(3, minmax(0, 1fr)) !important;
+  grid-template-areas:
+    "one one two two"
+    "three four four five"
+    "six six seven eight";
+  max-height: 900px;
+  overflow: hidden;
+}
+.photo-grid-wrap.grid-8-img-1 img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+  object-fit: cover;
+}
+.photo-grid-wrap.grid-8-img-1 > :nth-child(1) {
+  grid-area: one;
+}
+.photo-grid-wrap.grid-8-img-1 > :nth-child(2) {
+  grid-area: two;
+}
+.photo-grid-wrap.grid-8-img-1 > :nth-child(3) {
+  grid-area: three;
+}
+.photo-grid-wrap.grid-8-img-1 > :nth-child(4) {
+  grid-area: four;
+}
+.photo-grid-wrap.grid-8-img-1 > :nth-child(5) {
+  grid-area: five;
+}
+.photo-grid-wrap.grid-8-img-1 > :nth-child(6) {
+  grid-area: six;
+}
+.photo-grid-wrap.grid-8-img-1 > :nth-child(7) {
+  grid-area: seven;
+}
+.photo-grid-wrap.grid-8-img-1 > :nth-child(8) {
+  grid-area: eight;
+}
+
+.photo-grid-wrap.grid-8-2 {
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  grid-template-rows: repeat(3, minmax(0, 1fr)) !important;
+  grid-template-areas:
+    "one one two three"
+    "four four five five"
+    "six seven eight eight";
+  max-height: 900px;
+  overflow: hidden;
+}
+.photo-grid-wrap.grid-8-2 img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+  object-fit: cover;
+}
+.photo-grid-wrap.grid-8-2 > :nth-child(1) {
+  grid-area: one;
+}
+.photo-grid-wrap.grid-8-2 > :nth-child(2) {
+  grid-area: two;
+}
+.photo-grid-wrap.grid-8-2 > :nth-child(3) {
+  grid-area: three;
+}
+.photo-grid-wrap.grid-8-2 > :nth-child(4) {
+  grid-area: four;
+}
+.photo-grid-wrap.grid-8-2 > :nth-child(5) {
+  grid-area: five;
+}
+.photo-grid-wrap.grid-8-2 > :nth-child(6) {
+  grid-area: six;
+}
+.photo-grid-wrap.grid-8-2 > :nth-child(7) {
+  grid-area: seven;
+}
+.photo-grid-wrap.grid-8-2 > :nth-child(8) {
+  grid-area: eight;
+}
+
 .photo-caption {
   font-family: "Roboto", sans-serif;
   font-size: var(--fs-small);
@@ -765,6 +856,13 @@ img {
 }
 .article-images .photo-grid-wrap .tall img {
   aspect-ratio: 3/4 !important;
+}
+
+@media(min-width: 900px){
+  .article-images{
+  position: sticky;
+  top: 20px;    
+  }
 }
 
 .tbc {
@@ -874,6 +972,19 @@ article.arts-and-culture h3,
 article.arts-and-culture .page-kicker,
 article.arts-and-culture .page-kicker {
   color: #f35d34 !important;
+}
+
+#page-20 .presidents-report{
+  background-image: url(../../publication-web-resources/image/Murray_McKinnon_2026.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 50px 0;
+}
+@media(min-width: 900px){
+
+  #page-20 .presidents-report{
+    grid-template-columns: 50% 1fr !important;
+  }
 }
 
 /* ---------- cover ---------- */
@@ -1204,7 +1315,18 @@ article.arts-and-culture .page-kicker {
   font-family: "Roboto", sans-serif;
   font-size: var(--fs-small);
   margin-top: var(--gap);
+    border: 1px solid var(--navy);
+    padding: 0 !important;
 }
+.prefect-list .p{
+  padding: 10px 20px !important;
+  border: none !important;
+  background-color: #d0dfe0;
+}
+.prefect-list .p:nth-child(even){
+  background-color: #fff;
+}
+
 @media (min-width: 640px) {
   .prefect-list {
     columns: 3;
@@ -1212,7 +1334,10 @@ article.arts-and-culture .page-kicker {
 }
 @media (min-width: 900px) {
   .prefect-list {
-    columns: 4;
+    columns: 2 !important;
+  }
+  .prefect-list.grammar-families{
+    columns: 1 !important;
   }
 }
 .prefect-list .p {
@@ -1225,6 +1350,7 @@ article.arts-and-culture .page-kicker {
   display: block;
   color: var(--navy);
   font-weight: 600;
+  text-transform: uppercase;
 }
 .prefect-list .p span {
   color: var(--muted);
@@ -1232,6 +1358,33 @@ article.arts-and-culture .page-kicker {
 }
 .prefect-list .p.lead b {
   color: var(--gold);
+}
+
+/* ---------- donor list ---------- */
+.donor-list {
+  columns: 2;
+  column-gap: 1.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 0.6rem 0 1.5rem;
+  font-family: "Roboto", sans-serif;
+  font-size: var(--fs-small);
+  color: var(--muted);
+}
+@media (min-width: 640px) {
+  .donor-list {
+    columns: 3;
+  }
+}
+@media (min-width: 900px) {
+  .donor-list {
+    columns: 4;
+  }
+}
+.donor-list li {
+  break-inside: avoid;
+  padding: 0.3rem 0;
+  border-bottom: 1px solid var(--line);
 }
 
 /* ---------- footer ---------- */
