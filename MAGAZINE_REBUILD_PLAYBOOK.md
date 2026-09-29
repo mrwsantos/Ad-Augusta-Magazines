@@ -244,6 +244,35 @@ starting point:
 - Skip decorative-only images identified in Step 3; keep every photo
   that's actual editorial content, with real (not generic) `alt` text
   where the export provided AI-generated alt descriptions.
+- Build every multi-photo group (even a single photo) as
+  `.photo-grid > .photo-grid-wrap` + sibling `.photo-caption` — a
+  two-level CSS Grid component, not a flat structure. `.photo-grid-wrap`
+  auto-sizes columns to match photo count (`:has()` selectors per N from
+  2-8, `@media (min-width:640px)`), with named classes
+  (`grid-A-B`, `custom-R-row-C-col` using `grid-template-areas`) for
+  hand-designed mosaics when auto-columns don't read well. Use
+  `minmax(0,1fr)` (not bare `1fr`) for any custom-area tracks — plain
+  `1fr` carries an implicit content-based minimum that can force the
+  grid taller than an intended `aspect-ratio`. When a caption numbers
+  photos ("1) ... 2) ..."), wrap each `<img>` in a small relatively-
+  positioned div with an absolutely-positioned corner badge, and check
+  the badge order actually matches the DOM order AND the caption's
+  numbering — these can silently disagree. Full detail (exact CSS) in
+  the `photo-grid-system` memory. Flexbox was tried once for this and
+  reverted (default `align-items:stretch` distorted images) — start from
+  Grid, don't reach for flex.
+- Heading hierarchy per page: exactly one real `<h1>` (the lead headline
+  in `.article-head`); every other in-page sub-topic is
+  `<h2 class="contents-title">`; a sub-topic with a genuinely different
+  kicker/category (not just a sub-headline under the same topic) gets an
+  `<h3 class="page-kicker">` directly above its `<h2>`. Promote a
+  paragraph's bold lead-in (`<p><b>Topic.</b> text...`) to a real `<h3>`
+  once the same page uses real headings for its other subsections —
+  don't leave it as inline bold text inconsistently.
+- A "wall of names" separated by commas (donor lists, sponsor lists)
+  should be a multi-column `<ul>` (one `<li>` per name, `columns:2/3/4`
+  at breakpoints, split on ", " but keep "&"-joined pairs as one entry),
+  not flowing prose paragraphs.
 
 ## 8. JS — mostly copy-paste, two files
 
@@ -256,8 +285,29 @@ starting point:
   delegated listener is the only way both scripts' links work.
 - `mobile-pager.js`: hardcoded `PAGES` array (`id` + human title) is the
   only thing that changes per magazine — keep the rest of the file as
-  the template. Builds the jump list, tracks the active section via
-  `IntersectionObserver`, and open/close for the sheet.
+  the template. Builds the jump list and open/close for the sheet.
+  **Track the active section via scroll position, not
+  `IntersectionObserver`**: on a rAF-throttled scroll listener, find the
+  last section whose `getBoundingClientRect().top <= REF_Y` (~120px,
+  just below the sticky header) and mark that one active. An earlier
+  version used `IntersectionObserver` with a fixed `threshold` array and
+  picked whichever section had the highest ratio in that callback's
+  `entries` — this silently stops updating while scrolling through any
+  section much taller than the viewport (common — photo-heavy pages run
+  2-3+ screen heights), because the ratio can drift for a long time
+  without crossing one of the exact threshold values, so the callback
+  never fires. The scroll-position approach is height-agnostic and can't
+  get stuck.
+- Desktop header nav gets a live centered category label
+  (`#headerCategory`, absolutely centered in `.header-wrapper` at
+  ≥900px, hidden below it) that mirrors the current slide's
+  `.page-kicker` textContent on the same scroll/resize listener that
+  drives active-link tracking — build this by default alongside the nav
+  itself, not just when asked. Pair it with a mobile/tablet scroll-hide
+  header (<900px): `.site-header` gets `.header-hidden { transform:
+  translateY(-100%) }`, toggled on a rAF-throttled scroll listener —
+  hide past 300px scrolled down, show immediately on any scroll up.
+  Full detail in the `desktop-header-nav-pattern` memory.
 
 ## 9. Testing loop
 
@@ -287,3 +337,41 @@ user's problem.
   (e.g. an article spanning pages 14–17 when the cutoff is page 19 is
   fine to finish; one that starts at page 18 and would run past the
   requested range should not be started).
+
+## 11. Consolidating spreads into fewer sections (expect this repeatedly)
+
+Once a full issue is built, expect repeated requests to merge spreads
+that were originally one-story-per-page into fewer, denser sections —
+this happened many times across one issue, not as a single one-off ask.
+Full step-by-step in the `page-consolidation-procedure` memory; the
+short version:
+
+- **Content merge**: for the page being absorbed, drop its
+  `.page-kicker`/`.article-head` if the kicker matches the target page's
+  (convert `<h1>` → `<h2 class="contents-title">`, keep `.deck`, prepend
+  `<hr>`); if the kicker is genuinely different, keep it as
+  `<h3 class="page-kicker">` above the new `<h2>`. Never leave more than
+  one real `<h1>` per page. Do each boundary as one edit spanning from
+  the target's last content through the absorbed page's opening
+  tags+kicker+heading — the absorbed page's own closing tags become the
+  target's closing tags, leave them alone.
+- **Renumbering**: remove the merged-away page from `.toc-nav`, the
+  curated `.toc-list`/`.toc-featured`, and `mobile-pager.js`'s `PAGES`
+  array. Fix any cross-reference pointing at the merged-away page's
+  specific old id (e.g. a cover teaser link) to the target's *new* id as
+  a special case — it doesn't follow the generic shift. Then renumber
+  everything after the merge point in **one atomic regex pass**
+  (`re.sub` with a `shift(n)` function computed from the original
+  matched number — never sequential/chained renames, which
+  double-renumber on collision) covering: `page-(\d{2})` ids/hrefs,
+  `<span class="num">(\d{2})</span` badges (match only up to `</span`,
+  not the full closing tag — this file's prettier-style formatting often
+  breaks it across two lines as `</span\n>`, and an exact-match regex
+  silently skips those, leaving stale badges), `PAGE (\d{2}) —` section
+  comments, and `>Page (\d{1,2})<` visible references.
+- **Verify every time**: sequential ids with no gaps, zero broken links,
+  zero missing images, `node --check` + sequential pager array, zero
+  `href` vs `<span class="num">` mismatches (audit by capturing each
+  anchor's full contents and searching inside it — a fixed
+  character-gap heuristic misses cases where an `<img>` sits between the
+  href and the badge), and exactly one `<h1>` per merged page.

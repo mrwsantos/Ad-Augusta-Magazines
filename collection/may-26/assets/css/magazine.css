@@ -48,9 +48,8 @@ h3 {
   line-height: 1.15;
 }
 
-h3{
+h3 {
   font-family: "Roboto", Georgia, serif;
-
 }
 
 a {
@@ -146,8 +145,9 @@ img {
   letter-spacing: 10%;
 }
 
-.menu-toggle .hamburger svg *{fill: var(--navy);}
-
+.menu-toggle .hamburger svg * {
+  fill: var(--navy);
+}
 
 .header-wrapper {
   display: flex;
@@ -178,8 +178,8 @@ img {
   background: var(--navy);
   color: #fff;
 }
-.header-wrapper.on-cover .menu-toggle .hamburger svg *{
-  fill: #fff
+.header-wrapper.on-cover .menu-toggle .hamburger svg * {
+  fill: #fff;
 }
 
 .header-category {
@@ -344,8 +344,8 @@ img {
 .spread.old-boys .page-kicker {
   color: var(--navy-deep);
 }
-.spread.old-boys p{
-  color: var(--muted)
+.spread.old-boys p {
+  color: var(--muted);
 }
 
 .spread .wrap {
@@ -525,11 +525,10 @@ img {
   /* max-width: 34rem; */
 }
 
-@media (max-width: 900px)
-{
-.pull-quote{
-  color: var(--navy) !important;
-}  
+@media (max-width: 900px) {
+  .pull-quote {
+    color: var(--navy) !important;
+  }
 }
 
 .pull-quote cite {
@@ -645,12 +644,6 @@ img {
     grid-row: 2;
   }
 
-
-
-
-
-
-
   .photo-grid-wrap.custom-3-row-3-col {
     grid-template-columns: repeat(3, 1fr) !important;
     grid-template-rows: repeat(3, 1fr) !important;
@@ -681,7 +674,6 @@ img {
     aspect-ratio: auto;
     object-fit: cover;
   }
-
 
   .photo-grid-num {
     position: relative;
@@ -858,10 +850,10 @@ img {
   aspect-ratio: 3/4 !important;
 }
 
-@media(min-width: 900px){
-  .article-images{
-  position: sticky;
-  top: 20px;    
+@media (min-width: 900px) {
+  .article-images {
+    position: sticky;
+    top: 20px;
   }
 }
 
@@ -933,6 +925,9 @@ main {
 }
 
 @media (min-width: 900px) {
+  #page-10 .prefect-list {
+    columns: 3 !important;
+  }
   #page-13 .masthead-grid {
     display: flex;
     flex-direction: column;
@@ -942,6 +937,33 @@ main {
 #page-12 h3 {
   margin-top: 0px;
 }
+
+@media (min-width: 900px) {
+  #page-19 .presidents-report .article-images {
+    display: none;
+  }
+
+  #page-19 .presidents-report {
+    background-image: url(../../publication-web-resources/image/Murray_McKinnon_2026.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 50px 0;
+    grid-template-columns: 50% 1fr !important;
+  }
+}
+
+#page-25 .photo-grid-wrap{
+  grid-template-columns: 1fr 3fr !important;
+  
+}
+
+@media (max-width: 900px) {
+  #page-25 .photo-grid-wrap img{
+  height: 300px !important;
+}
+
+}
+
 
 /* PAGE 11 AND 12 */
 article.academia h2,
@@ -974,17 +996,8 @@ article.arts-and-culture .page-kicker {
   color: #f35d34 !important;
 }
 
-#page-20 .presidents-report{
-  background-image: url(../../publication-web-resources/image/Murray_McKinnon_2026.png);
-  background-repeat: no-repeat;
-  background-size: cover;
-  padding: 50px 0;
-}
-@media(min-width: 900px){
-
-  #page-20 .presidents-report{
-    grid-template-columns: 50% 1fr !important;
-  }
+dd {
+  margin-inline-start: 0px;
 }
 
 /* ---------- cover ---------- */
@@ -1315,16 +1328,8 @@ article.arts-and-culture .page-kicker {
   font-family: "Roboto", sans-serif;
   font-size: var(--fs-small);
   margin-top: var(--gap);
-    border: 1px solid var(--navy);
-    padding: 0 !important;
-}
-.prefect-list .p{
-  padding: 10px 20px !important;
-  border: none !important;
-  background-color: #d0dfe0;
-}
-.prefect-list .p:nth-child(even){
-  background-color: #fff;
+  border: none;
+  padding: 0 !important;
 }
 
 @media (min-width: 640px) {
@@ -1336,16 +1341,23 @@ article.arts-and-culture .page-kicker {
   .prefect-list {
     columns: 2 !important;
   }
-  .prefect-list.grammar-families{
+  .prefect-list.upcoming-events-21,
+  .prefect-list.grammar-families {
     columns: 1 !important;
   }
 }
 .prefect-list .p {
+  padding: 10px 20px !important;
+  border: 1px solid #bcc5c6;
+  background-color: #d0dfe0;
   break-inside: avoid;
-  padding: 0.35rem 0;
-  border-bottom: 1px solid var(--line);
-  margin-bottom: 0.1rem;
+  margin: 0;
 }
+
+.prefect-list .p:nth-child(even) {
+  background-color: #fff;
+}
+
 .prefect-list .p b {
   display: block;
   color: var(--navy);
@@ -1383,8 +1395,12 @@ article.arts-and-culture .page-kicker {
 }
 .donor-list li {
   break-inside: avoid;
-  padding: 0.3rem 0;
-  border-bottom: 1px solid var(--line);
+  padding: 0.3rem 20px;
+  border: 1px solid #d0dfe0;
+  background-color: #d0dfe0;
+}
+.donor-list li:nth-child(even) {
+  background-color: #fff;
 }
 
 /* ---------- footer ---------- */
@@ -1684,4 +1700,50 @@ html.lb-open {
   right: 0.8rem;
   top: 50%;
   transform: translateY(-50%);
+}
+
+.blue-section {
+  background-color: var(--navy-deep);
+}
+.blue-section.online-access {
+  padding: 40px;
+  color: #fff;
+}
+.blue-section.online-access a,
+.blue-section.online-access p {
+  color: #fff !important;
+}
+.blue-section.online-access h2 {
+  color: var(--gold);
+  text-transform: uppercase;
+  font-weight: 400;
+  font-size: 24px;
+}
+@media (min-width: 900px) {
+  .blue-section.online-access .article-columns {
+    grid-template-columns: 15% 1fr;
+  }
+}
+
+.blue-section.online-access .frame {
+  padding: 20px;
+  border:1px solid  #ffffff20;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 900px) {
+
+.blue-section.online-access .article-columns > .article-images {
+  order: 1 !important;
+
+  display: flex;
+  justify-content: center;
+}
+}
+
+#page-26 .photo-grid-wrap .ad-card,
+  #page-26 .photo-grid-wrap img{
+  height: 100%;
+  width: 100%;
+  aspect-ratio: initial !important;
 }

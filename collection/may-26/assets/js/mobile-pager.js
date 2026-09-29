@@ -25,7 +25,7 @@
 		{ id: 'page-23', title: 'Grammar Families' },
 		{ id: 'page-24', title: 'Obituaries' },
 		{ id: 'page-25', title: 'From the Archives' },
-		{ id: 'page-26', title: 'Combined Decade Reunion' },
+		{ id: 'page-26', title: 'Sponsors and Partners' },
 		{ id: 'page-27', title: 'Advertisement' }
 	];
 
