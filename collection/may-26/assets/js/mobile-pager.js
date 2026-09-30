@@ -19,14 +19,15 @@
 		{ id: 'page-17', title: 'Events' },
 		{ id: 'page-18', title: 'Giving to Grammar' },
 		{ id: 'page-19', title: 'Farewell Shiela, Lady Graham' },
-		{ id: 'page-20', title: 'Anzac Day' },
-		{ id: 'page-21', title: 'Augusta and Lion Awards' },
-		{ id: 'page-22', title: 'Old Boys\' News' },
-		{ id: 'page-23', title: 'Grammar Families' },
-		{ id: 'page-24', title: 'Obituaries' },
-		{ id: 'page-25', title: 'From the Archives' },
-		{ id: 'page-26', title: 'Sponsors and Partners' },
-		{ id: 'page-27', title: 'Advertisement' }
+		{ id: 'page-20', title: 'President\'s Report' },
+		{ id: 'page-21', title: 'Anzac Day' },
+		{ id: 'page-22', title: 'Augusta and Lion Awards' },
+		{ id: 'page-23', title: 'Old Boys\' News' },
+		{ id: 'page-24', title: 'Grammar Families' },
+		{ id: 'page-25', title: 'Obituaries' },
+		{ id: 'page-26', title: 'From the Archives' },
+		{ id: 'page-27', title: 'Sponsors and Partners' },
+		{ id: 'page-28', title: 'Advertisement' }
 	];
 
 	var pager = document.getElementById('mobilePager');

@@ -2,10 +2,11 @@
 
 :root {
   --navy: #041630;
+  --navy-light: #8fa7ab;
   --navy-deep: #0e2138;
   --gold: #fbba23;
   --gold-light: #d9ab55;
-  --ink: #232323;
+  --ink: #666564;
   --muted: #667080;
   --paper: #fdfcfa;
   --card: #f3f0ea;
@@ -59,6 +60,8 @@ img {
   /* width: 100%; */
   max-width: 100%;
   display: block;
+  filter: contrast(0.95) saturate(0.6);
+  -webkit-filter: contrast(0.95) saturate(0.6);
 }
 .ui {
   font-family: "Roboto", system-ui, sans-serif;
@@ -376,11 +379,11 @@ img {
   margin: 0;
 }
 .deck {
-  font-size: var(--fs-deck);
   color: var(--muted);
   margin-top: 0.7rem;
   font-size: 1rem;
   text-transform: uppercase;
+  font-family: "constantia", sans-serif;
 }
 
 .hero-photo {
@@ -852,8 +855,8 @@ img {
 
 @media (min-width: 900px) {
   .article-images {
-    position: sticky;
-    top: 20px;
+    /* position: sticky; */
+    /* top: 20px; */
   }
 }
 
@@ -938,12 +941,42 @@ main {
   margin-top: 0px;
 }
 
+#page-17 .blue-section{
+  max-width: 350px;
+  text-align: center;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+#page-17 .blue-section img{
+  max-width: 200px;
+  margin-bottom: 10px;
+}
+#page-17 .blue-section b,
+#page-17 .blue-section p{
+  text-align: left !important;
+  margin: 0 !important;
+  font-size: 14px;
+  width: 100%;
+  display: block;
+}
+#page-17 .blue-section a{
+  margin: 0;
+  padding-bottom: 0;
+  border: none;
+  text-decoration: underline;
+}
+
+
 @media (min-width: 900px) {
-  #page-19 .presidents-report .article-images {
+  #page-20 .presidents-report .article-images {
     display: none;
   }
 
-  #page-19 .presidents-report {
+  #page-20 .presidents-report {
     background-image: url(../../publication-web-resources/image/Murray_McKinnon_2026.png);
     background-repeat: no-repeat;
     background-size: cover;
@@ -951,14 +984,21 @@ main {
     grid-template-columns: 50% 1fr !important;
   }
 }
+  #page-20  blockquote {
+  border-left: 2px solid var(--navy);
+  padding-left: 20px;
+  padding-right: 40px;
+  margin: 20px 0;
+  font-family: "constantia", sans-serif;
+  }
 
-#page-25 .photo-grid-wrap{
-  grid-template-columns: 1fr 3fr !important;
-  
+#page-26 .photo-grid-wrap{
+  /* grid-template-columns: 1fr 3fr !important; */
+
 }
 
 @media (max-width: 900px) {
-  #page-25 .photo-grid-wrap img{
+  #page-26 .photo-grid-wrap img{
   height: 300px !important;
 }
 
@@ -994,6 +1034,10 @@ article.arts-and-culture h3,
 article.arts-and-culture .page-kicker,
 article.arts-and-culture .page-kicker {
   color: #f35d34 !important;
+}
+article.giving-to-grammar .page-kicker,
+article.giving-to-grammar .page-kicker {
+  color: #ab425c !important;
 }
 
 dd {
@@ -1396,7 +1440,9 @@ dd {
 .donor-list li {
   break-inside: avoid;
   padding: 0.3rem 20px;
-  border: 1px solid #d0dfe0;
+  border: 1px solid #8fa7ab;
+  border-top: .5px solid #8fa7ab;
+  border-bottom: .5px solid #8fa7ab;
   background-color: #d0dfe0;
 }
 .donor-list li:nth-child(even) {
@@ -1677,6 +1723,7 @@ html.lb-open {
   line-height: 1;
   cursor: pointer;
   padding-bottom: 2px;
+  z-index: 99;
 }
 .lb-btn:hover,
 .lb-btn:focus-visible {
@@ -1705,12 +1752,12 @@ html.lb-open {
 .blue-section {
   background-color: var(--navy-deep);
 }
-.blue-section.online-access {
+.blue-section {
   padding: 40px;
   color: #fff;
 }
-.blue-section.online-access a,
-.blue-section.online-access p {
+.blue-section a,
+.blue-section p {
   color: #fff !important;
 }
 .blue-section.online-access h2 {
@@ -1741,8 +1788,8 @@ html.lb-open {
 }
 }
 
-#page-26 .photo-grid-wrap .ad-card,
-  #page-26 .photo-grid-wrap img{
+#page-27 .photo-grid-wrap .ad-card,
+  #page-27 .photo-grid-wrap img{
   height: 100%;
   width: 100%;
   aspect-ratio: initial !important;
