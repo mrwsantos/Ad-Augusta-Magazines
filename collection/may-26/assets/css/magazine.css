@@ -928,20 +928,20 @@ main {
 }
 
 @media (min-width: 900px) {
-  #page-10 .prefect-list {
+  #page-09 .prefect-list {
     columns: 3 !important;
   }
-  #page-13 .masthead-grid {
+  #page-12 .masthead-grid {
     display: flex;
     flex-direction: column;
   }
 }
 
-#page-12 h3 {
+#page-11 h3 {
   margin-top: 0px;
 }
 
-#page-17 .blue-section{
+#page-16 .blue-section{
   max-width: 350px;
   text-align: center;
 
@@ -951,19 +951,19 @@ main {
   align-items: center;
   gap: 5px;
 }
-#page-17 .blue-section img{
+#page-16 .blue-section img{
   max-width: 200px;
   margin-bottom: 10px;
 }
-#page-17 .blue-section b,
-#page-17 .blue-section p{
+#page-16 .blue-section b,
+#page-16 .blue-section p{
   text-align: left !important;
   margin: 0 !important;
   font-size: 14px;
   width: 100%;
   display: block;
 }
-#page-17 .blue-section a{
+#page-16 .blue-section a{
   margin: 0;
   padding-bottom: 0;
   border: none;
@@ -972,11 +972,11 @@ main {
 
 
 @media (min-width: 900px) {
-  #page-20 .presidents-report .article-images {
+  #page-19 .presidents-report .article-images {
     display: none;
   }
 
-  #page-20 .presidents-report {
+  #page-19 .presidents-report {
     background-image: url(../../publication-web-resources/image/Murray_McKinnon_2026.png);
     background-repeat: no-repeat;
     background-size: cover;
@@ -984,7 +984,7 @@ main {
     grid-template-columns: 50% 1fr !important;
   }
 }
-  #page-20  blockquote {
+  #page-19  blockquote {
   border-left: 2px solid var(--navy);
   padding-left: 20px;
   padding-right: 40px;
@@ -992,13 +992,13 @@ main {
   font-family: "constantia", sans-serif;
   }
 
-#page-26 .photo-grid-wrap{
+#page-25 .photo-grid-wrap{
   /* grid-template-columns: 1fr 3fr !important; */
 
 }
 
 @media (max-width: 900px) {
-  #page-26 .photo-grid-wrap img{
+  #page-25 .photo-grid-wrap img{
   height: 300px !important;
 }
 
@@ -1355,7 +1355,7 @@ dd {
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--navy);
+  color: #628f46 !important;
   margin: 1.5rem 0 0.5rem;
 }
 .toc-note {
@@ -1788,8 +1788,8 @@ html.lb-open {
 }
 }
 
-#page-27 .photo-grid-wrap .ad-card,
-  #page-27 .photo-grid-wrap img{
+#page-26 .photo-grid-wrap .ad-card,
+  #page-26 .photo-grid-wrap img{
   height: 100%;
   width: 100%;
   aspect-ratio: initial !important;
