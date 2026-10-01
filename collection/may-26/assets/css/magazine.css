@@ -341,9 +341,14 @@ img {
   padding: 0 0 100px;
   border-bottom: 1px solid var(--line);
 }
-/* Old Boys' News section (pages 26-38) */
+/* Old Boys' News section (pages 19-26) */
 .spread.old-boys {
   background-color: #d0dfe0;
+  /* the default --navy-light (#C3C3C3) used inline for every <hr> separator
+     has a contrast ratio of ~1.3 against this pale background — effectively
+     invisible. Redefining the variable here fixes every inline var(--navy-light)
+     usage on these pages without touching it anywhere else on the site. */
+  --navy-light: var(--muted);
 }
 .spread.old-boys .page-kicker {
   color: var(--navy-deep);
@@ -391,7 +396,7 @@ img {
   width: 100%;
   aspect-ratio: 16/10;
   object-fit: cover;
-  object-position: bottom;
+  object-position: top;
 }
 @media (min-width: 900px) {
   .hero-photo {
@@ -979,6 +984,15 @@ img {
     /* position: sticky; */
     /* top: 20px; */
   }
+  /* page-8 (10 Clive Road) has a short 6-photo gallery against ~25
+     paragraphs of body text — without sticky the gallery column ends in a
+     large dead gap once the text runs past it. Scoped to this page rather
+     than enabling it site-wide, since other .article-images usages weren't
+     designed around a sticky column. */
+  #page-08 .article-images {
+    position: sticky;
+    top: 20px;
+  }
 }
 
 .tbc {
@@ -1389,6 +1403,11 @@ dd {
   font-size: var(--fs-h2);
   color: var(--navy-deep);
   margin-bottom: 1rem;
+}
+/* page-14 only has one masthead-grid pair (Staff Awards) sitting among a
+   handful of full-width sections — that pair alone stays smaller. */
+#page-14 .masthead-grid .contents-title {
+  font-size: 1.3rem;
 }
 .toc-featured {
   display: grid;
