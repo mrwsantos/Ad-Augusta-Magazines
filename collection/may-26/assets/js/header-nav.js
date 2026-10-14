@@ -73,7 +73,7 @@
 		});
 		if (categoryEl) {
 			var slide = id ? document.getElementById(id) : null;
-			var kicker = slide ? (slide.querySelector('.page-kicker') || slide.querySelector('h1')) : null;
+			var kicker = slide ? (slide.querySelector('.page-kicker') || slide.querySelector('h1') || slide.querySelector('h2.contents-title')) : null;
 			var label = '';
 				if (kicker) {
 					var copy = kicker.cloneNode(true);

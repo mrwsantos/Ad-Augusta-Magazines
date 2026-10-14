@@ -49,12 +49,31 @@
 		}, 120);
 	});
 
-	document.getElementById('prevSlide').addEventListener('click', function () {
+	var prevSlide = document.getElementById('prevSlide');
+	var nextSlide = document.getElementById('nextSlide');
+	prevSlide.addEventListener('click', function () {
 		goTo(currentIndex() - 1);
 	});
-	document.getElementById('nextSlide').addEventListener('click', function () {
+	nextSlide.addEventListener('click', function () {
 		goTo(currentIndex() + 1);
 	});
+
+	// desktop header's prev/next arrows flanking #headerCategory — same nav
+	var headerPrev = document.getElementById('headerPrevPage');
+	var headerNext = document.getElementById('headerNextPage');
+	if (headerPrev) headerPrev.addEventListener('click', function () { goTo(currentIndex() - 1); });
+	if (headerNext) headerNext.addEventListener('click', function () { goTo(currentIndex() + 1); });
+
+	// no page before the cover — dim/disable both "previous" buttons there
+	function updatePrevState() {
+		var atStart = currentIndex() <= 0;
+		prevSlide.classList.toggle('is-disabled', atStart);
+		if (headerPrev) headerPrev.classList.toggle('is-disabled', atStart);
+	}
+	updatePrevState();
+	main.addEventListener('scroll', updatePrevState, { passive: true });
+	window.addEventListener('scroll', updatePrevState, { passive: true });
+	window.addEventListener('resize', updatePrevState);
 
 	document.addEventListener('keydown', function (e) {
 		if (e.key === 'ArrowRight' || e.key === 'PageDown') { goTo(currentIndex() + 1); }

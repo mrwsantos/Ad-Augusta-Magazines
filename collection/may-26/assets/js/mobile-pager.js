@@ -41,18 +41,25 @@
 
 	totalEl.textContent = pad(PAGES.length);
 
-	var list = document.createElement('ul');
-	PAGES.forEach(function (p, i) {
-		var li = document.createElement('li');
-		var a = document.createElement('a');
-		a.href = '#' + p.id;
-		a.dataset.index = String(i);
-		a.innerHTML = '<span class="n">' + pad(i + 1) + '</span><span class="t">' + p.title + '</span>';
-		li.appendChild(a);
-		list.appendChild(li);
-	});
-	sheet.appendChild(list);
-	var links = Array.prototype.slice.call(sheet.querySelectorAll('a'));
+	// the pager-sheet dropdown is optional — the current design may not
+	// include it (#pagerSheet removed/commented from the HTML). Guard every
+	// use of it so its absence can't throw and halt the rest of this script
+	// (which is what was silently breaking pagerName/pagerCurrent updates).
+	var links = [];
+	if (sheet) {
+		var list = document.createElement('ul');
+		PAGES.forEach(function (p, i) {
+			var li = document.createElement('li');
+			var a = document.createElement('a');
+			a.href = '#' + p.id;
+			a.dataset.index = String(i);
+			a.innerHTML = '<span class="n">' + pad(i + 1) + '</span><span class="t">' + p.title + '</span>';
+			li.appendChild(a);
+			list.appendChild(li);
+		});
+		sheet.appendChild(list);
+		links = Array.prototype.slice.call(sheet.querySelectorAll('a'));
+	}
 
 	function setActive(i) {
 		currentEl.textContent = pad(i + 1);
@@ -62,15 +69,18 @@
 	setActive(0);
 
 	function closeSheet() {
+		if (!sheet) return;
 		sheet.hidden = true;
 		toggle.setAttribute('aria-expanded', 'false');
 	}
 	function openSheet() {
+		if (!sheet) return;
 		sheet.hidden = false;
 		toggle.setAttribute('aria-expanded', 'true');
 	}
 	toggle.addEventListener('click', function (e) {
 		e.stopPropagation();
+		if (!sheet) return;
 		if (sheet.hidden) openSheet(); else closeSheet();
 	});
 	links.forEach(function (a) {
@@ -115,31 +125,68 @@
 			return active;
 		}
 
+		// desktop only: the pager starts hidden (slid below the viewport) and
+		// slides up near the bottom of the active .spread. On mobile the
+		// pager is just permanently fixed at the bottom via CSS — no hide/
+		// reveal tracking needed there at all.
+		var THRESHOLD = 300;
+		function updatePagerVisibility(activeIndex) {
+			if (!desktopMq.matches) return;
+			var active = sections[activeIndex];
+			// a page whose content exactly fits its .spread (e.g. the cover,
+			// height:100% with no overflow) has scrollHeight === clientHeight,
+			// so there's no real "middle of reading" state to hide the pager
+			// during — there's nothing more to reveal by scrolling, so it
+			// should just always be visible (and usable for navigation).
+			// Otherwise, only reveal it once within THRESHOLD px of the
+			// actual bottom of a page that does have real scrollable content.
+			var scrollable = active.scrollHeight - active.clientHeight;
+			var distanceToBottom = scrollable - active.scrollTop;
+			var show = scrollable <= THRESHOLD || distanceToBottom <= THRESHOLD;
+			pager.classList.toggle('near-end', show);
+		}
+
 		var scrollTicking = false;
 		function onScroll() {
 			scrollTicking = false;
-			setActive(computeActiveIndex());
+			var activeIndex = computeActiveIndex();
+			setActive(activeIndex);
+			updatePagerVisibility(activeIndex);
+			attachSpreadScroll(activeIndex);
 		}
-		window.addEventListener('scroll', function () {
+		function requestTick() {
 			if (!scrollTicking) {
 				requestAnimationFrame(onScroll);
 				scrollTicking = true;
 			}
-		}, { passive: true });
-		if (main) {
-			main.addEventListener('scroll', function () {
-				if (!scrollTicking) {
-					requestAnimationFrame(onScroll);
-					scrollTicking = true;
+		}
+
+		// desktop only: window never scrolls there, and main's own scroll
+		// event only fires on the horizontal swipe between slides — the
+		// active .spread's OWN vertical scroll (which is what changes
+		// "distance to bottom" while reading a page) needs its own listener,
+		// re-attached to whichever .spread is current whenever the active
+		// slide changes.
+		var currentSpreadTarget = null;
+		function attachSpreadScroll(activeIndex) {
+			if (!desktopMq.matches) {
+				if (currentSpreadTarget) {
+					currentSpreadTarget.removeEventListener('scroll', requestTick);
+					currentSpreadTarget = null;
 				}
-			}, { passive: true });
-		}
-		window.addEventListener('resize', function () {
-			if (!scrollTicking) {
-				requestAnimationFrame(onScroll);
-				scrollTicking = true;
+				return;
 			}
-		});
-		setActive(computeActiveIndex());
+			var spread = sections[activeIndex];
+			if (spread === currentSpreadTarget) return;
+			if (currentSpreadTarget) currentSpreadTarget.removeEventListener('scroll', requestTick);
+			currentSpreadTarget = spread;
+			currentSpreadTarget.addEventListener('scroll', requestTick, { passive: true });
+		}
+
+		window.addEventListener('scroll', requestTick, { passive: true });
+		if (main) main.addEventListener('scroll', requestTick, { passive: true });
+		window.addEventListener('resize', requestTick);
+		desktopMq.addEventListener('change', onScroll);
+		onScroll();
 	}
 })();

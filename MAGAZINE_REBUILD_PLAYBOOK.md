@@ -249,18 +249,20 @@ starting point:
   two-level CSS Grid component, not a flat structure. `.photo-grid-wrap`
   auto-sizes columns to match photo count (`:has()` selectors per N from
   2-8, `@media (min-width:640px)`), with named classes
-  (`grid-A-B`, `custom-R-row-C-col` using `grid-template-areas`) for
-  hand-designed mosaics when auto-columns don't read well. Use
-  `minmax(0,1fr)` (not bare `1fr`) for any custom-area tracks — plain
-  `1fr` carries an implicit content-based minimum that can force the
-  grid taller than an intended `aspect-ratio`. When a caption numbers
-  photos ("1) ... 2) ..."), wrap each `<img>` in a small relatively-
-  positioned div with an absolutely-positioned corner badge, and check
-  the badge order actually matches the DOM order AND the caption's
-  numbering — these can silently disagree. Full detail (exact CSS) in
-  the `photo-grid-system` memory. Flexbox was tried once for this and
-  reverted (default `align-items:stretch` distorted images) — start from
-  Grid, don't reach for flex.
+  (`grid-A-B`, `custom-R-row-C-col` using `grid-template-areas`, and a
+  5-photo "hero + 4 supporting" family — `custom-5-feature-left/top/right`
+  — pick whichever variant puts the strongest photo where it actually
+  sits in the DOM) for hand-designed mosaics when auto-columns don't read
+  well. Use `minmax(0,1fr)` (not bare `1fr`) for any custom-area tracks —
+  plain `1fr` carries an implicit content-based minimum that can force
+  the grid taller than an intended `aspect-ratio`. Full detail (exact
+  CSS) in the `photo-grid-system` memory. Flexbox was tried once for
+  this and reverted (default `align-items:stretch` distorted images) —
+  start from Grid, don't reach for flex.
+  **Numbered photo badges** (a small corner badge per photo, for captions
+  that reference them "1) ... 2) ...") were built, then **explicitly
+  removed sitewide on 2026-10-08** ("não precisamos deles mais") — do
+  NOT build this feature by default on a new issue; only add it if asked.
 - Heading hierarchy per page: exactly one real `<h1>` (the lead headline
   in `.article-head`); every other in-page sub-topic is
   `<h2 class="contents-title">`; a sub-topic with a genuinely different
@@ -303,11 +305,35 @@ starting point:
   ≥900px, hidden below it) that mirrors the current slide's
   `.page-kicker` textContent on the same scroll/resize listener that
   drives active-link tracking — build this by default alongside the nav
-  itself, not just when asked. Pair it with a mobile/tablet scroll-hide
+  itself, not just when asked. Flank it with prev/next page buttons
+  (`#headerPrevPage`/`#headerNextPage`, inside a `.header-category-group`
+  that carries the centering instead of the bare label) that reuse
+  `slider.js`'s existing `goTo(currentIndex() ± 1)` — draw the arrows as
+  solid CSS triangles via a `::before` border-trick with `currentColor`,
+  not a Unicode ‹/› glyph (renders thin/open in most fonts). Dim the
+  "previous" button with `.is-disabled{opacity:.3;pointer-events:none}`
+  on the cover page (both this one and the floating pager's own prev
+  button). Pair the category label with a mobile/tablet scroll-hide
   header (<900px): `.site-header` gets `.header-hidden { transform:
   translateY(-100%) }`, toggled on a rAF-throttled scroll listener —
   hide past 300px scrolled down, show immediately on any scroll up.
   Full detail in the `desktop-header-nav-pattern` memory.
+- Floating pager (`.mobile-pager`) visibility is **breakpoint-asymmetric
+  by design, not shared logic**: always fixed/visible on mobile
+  (`transform:translate(-50%,0); transition:none;` — several attempts at
+  a mobile hide/reveal behavior were all explicitly reverted, don't
+  rebuild one unless asked again); hidden by default on desktop, sliding
+  up (`.near-end{transform:translate(-50%,0)}`) once scrolled near the
+  bottom of the ACTIVE `.spread` specifically — which on desktop needs
+  its own scroll listener re-attached to whichever `.spread` is current,
+  since neither `window` nor `main`'s own scroll event reflects vertical
+  scroll within the current page there. **Watch for a sign-inversion
+  bug**: a page whose content exactly fits its box with no real overflow
+  (e.g. the cover) has `scrollHeight===clientHeight`, so a naive
+  "distance to bottom" calc is always ~0 — treat that case as **always
+  show** (nothing to hide the bar during), not always hide, or page
+  navigation breaks entirely on that page. Full detail in
+  `desktop-header-nav-pattern` items 10-11.
 
 ## 9. Testing loop
 
@@ -375,3 +401,86 @@ short version:
   anchor's full contents and searching inside it — a fixed
   character-gap heuristic misses cases where an `<img>` sits between the
   href and the badge), and exactly one `<h1>` per merged page.
+
+## 12. "List of related sub-topics" pages get a dedicated nav component
+
+A page that's really a list of several short, same-weight items (16
+Old Boys' profiles, 6 sports, 6 academia items...) should NOT be a plain
+stack of `.article-columns` sections separated by `<hr>` — give it the
+sticky-nav + content-item component instead: a left/top nav of anchor
+links (sticky on desktop, horizontal-scroll strip on mobile) next to a
+`.{type}-content` column of `.{type}-item` divs (image moved to the END
+of each item, after its text). One accent color per page via
+`article.{type} h2,h3,.page-kicker { color:#hex!important; }`. Built
+first for Sport, then copied to Academia/Arts/Events — full HTML/CSS
+spec, the shared `sport-nav.js` scrollspy (name is historical, it drives
+every type now), and two real bugs (a mobile scroll-feedback loop from
+calling `scrollIntoView()` inside a scroll handler, and a mobile
+hero-panel white-text fix) are all in the `sticky-section-nav-pattern`
+memory — copy that component, don't re-derive it.
+
+## 13. Auditing an existing page that "feels off" with no specific complaint
+
+When asked to improve a page's layout with a vague complaint ("tá
+estranho"), grep for these recurring structural bugs before proposing
+anything cosmetic — all have shown up more than once across this issue:
+
+- A second sub-story nested inside the FIRST sub-story's `.article-text`
+  instead of getting its own sibling `.article-columns` — its photo ends
+  up stranded far from its own text, with a dead gap in the shared image
+  column once the first story's shorter photo stack ends.
+- A bare `<img>` sitting outside `.photo-grid > .photo-grid-wrap`.
+- A `.masthead-grid` (2-column grid) with only ONE child — leaves an
+  entire empty column on desktop. Drop the class (or add a real second
+  child) when there's genuinely only one piece of content.
+- On a page listing several short profiles, a heading rendering at a
+  different size purely because it happens to be paired 2-up in a
+  `.masthead-grid` rather than standalone — every item on such a page
+  should share the same heading size regardless of 1-up/2-up layout.
+- An `<hr>` missing between two items that are paired inside the same
+  `.masthead-grid` row (every OTHER sequential item on the page gets an
+  `<hr>` between it and its neighbor, but a 2-column grid pair doesn't,
+  since inserting an `<hr>` as a 3rd grid child scatters it into the
+  wrong cell). Fix by dropping the 2-column pairing for that pair —
+  stack them as two plain sequential full-width items like all the
+  others, with a normal `<hr>` between them.
+- For a long single-narrative page (not a list — e.g. a ~25-paragraph
+  feature story) with a short photo gallery stuck at the top of the
+  25%-width `.article-images` column: `position:sticky` scoped to that
+  one page id (`#page-NN .article-images {position:sticky;top:20px;}`
+  inside `min-width:900px`) rather than enabling the sitewide (and
+  deliberately commented-out) version. Do NOT also add pull-quotes that
+  just repeat existing body text as a "break up the wall of text" trick
+  — this was tried and explicitly rejected even when the quotes were
+  verbatim and correctly attributed; only add pull-quotes if asked for
+  specifically.
+
+## 14. Low-contrast inline border/divider on a themed section's background
+
+If an `<hr>` or border uses an inline `style="border-top:1px solid
+var(--TOKEN)"` and effectively reads as "missing" on one particular
+section's background (but is fine everywhere else), check the actual
+contrast ratio before assuming the element is missing from the DOM —
+happened twice (a table border, then every `<hr>` across 8 "Old Boys'"
+pages, both against the same pale `#d0dfe0` background using the
+default `--navy-light:#C3C3C3`, contrast ratio ~1.3). Fix by
+**redefining the CSS custom property scoped to that section's class**
+(`.spread.old-boys { --navy-light: var(--muted); }`) — this fixes every
+inline `var(--navy-light)` usage inside that scope at once, without
+touching the token anywhere else on the site or hunting down each
+individual inline occurrence.
+
+## 15. Desktop body-flex architecture trap
+
+At `min-width:900px`, `body` becomes `display:flex;flex-direction:
+column;overflow:hidden`, with `main` (the horizontal page slider) as
+the ONLY scrollable region. `.site-header` and the floating pager
+escape this by being `position:fixed` (removed from flow). Any OTHER
+direct child added as a sibling after `</main>` that is NOT
+`position:fixed` permanently reserves its own height inside that flex
+column and renders pinned behind/below every single page — it does NOT
+behave like normal end-of-document content the way it would on a plain
+scrolling page, even though nothing about it looks "fixed" in the CSS.
+If a request wants one element to appear only at the true end of the
+whole site (the last page), nest it inside that LAST page's own content
+instead of adding it as a sibling after `</main>`.

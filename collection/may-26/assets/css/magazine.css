@@ -2,8 +2,8 @@
 
 :root {
   --navy: #041630;
-  --navy-light: #C3C3C3;
-  --navy-deep: #0e2138;
+  --navy-light: #c3c3c3;
+  --navy-deep: #0d2446;
   --gold: #fbba23;
   --gold-light: #d9ab55;
   --ink: #666564;
@@ -175,7 +175,7 @@ img {
   justify-content: flex-end;
 }
 .header-wrapper.on-cover .brand,
-.header-wrapper.on-cover .header-category {
+.header-wrapper.on-cover .header-category-group {
   display: none !important;
 }
 .header-wrapper.on-cover .menu-toggle {
@@ -186,29 +186,78 @@ img {
   fill: #fff;
 }
 
-.header-category {
+.header-category-group {
   display: none;
 }
 @media (min-width: 900px) {
   .header-wrapper {
     position: relative;
   }
-  .header-category {
-    display: block;
+  .header-category-group {
+    display: flex;
+    align-items: center;
+    gap: 30px;
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+  }
+  .header-category {
     font-family: "constantia", serif;
     font-size: 24px;
     font-weight: 400;
     letter-spacing: 2%;
     color: var(--navy);
     pointer-events: none;
+    white-space: nowrap;
+  }
+  .header-page-nav {
+    background: #fff;
+    border: none;
+    border-radius: 50px;
+    width: 25px;
+    height: 25px;
+    color: var(--navy);
+    font-size: 20px;
+    line-height: 1;
+    font-family: "Constantia", sans-serif;
+    cursor: pointer;
+    padding: 0.25rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom:4px;
+  }
+  .header-page-nav:hover {
+    color: var(--gold);
+  }
+  /* solid/closed triangle, drawn with borders rather than a text glyph —
+     a Unicode ‹/› arrow renders as a thin open chevron in most fonts, not
+     a filled triangle, and consistency across fonts isn't guaranteed. */
+  .header-page-nav::before {
+    content: "";
+    display: block;
+    width: 0;
+    height: 0;
+    border-top: 3px solid transparent;
+    border-bottom: 3px solid transparent;
+  }
+  .header-page-nav.prev::before {
+    border-right: 5px solid currentColor;
+    margin-right: 2px;
+  }
+  .header-page-nav.next::before {
+    border-left: 5px solid currentColor;
+    margin-left: 2px;
   }
   .header-wrapper.opened .header-category {
     /* color:#FFF; */
   }
+}
+ 
+.header-wrapper.opened .header-category{
+color: #fff
 }
 
 .brand {
@@ -340,6 +389,23 @@ img {
 .spread {
   padding: 0 0 100px;
   border-bottom: 1px solid var(--line);
+}
+@media (min-width: 900px) {
+  /* each .spread scrolls its own content on desktop; the floating pager
+     overlays it (no reserved space) once .near-end slides it up, so the
+     content needs enough bottom padding to clear the 129px bar when fully
+     scrolled — otherwise the last bit of every page ends up hidden behind it. */
+  .spread {
+    padding-bottom: 150px;
+  }
+  /* #page-01 (.cover) sets its own `padding` shorthand further down this
+     file, which overwrites .spread's padding-bottom above (same specificity,
+     later source order) — so the cover needs its own explicit override here.
+     The footer/pager is permanently visible on this page (no real scrollable
+     content to hide it during), so this needs to exactly clear its height. */
+  #page-01 {
+    padding-bottom: 129px !important;
+  }
 }
 /* Old Boys' News section (pages 19-26) */
 .spread.old-boys {
@@ -513,8 +579,8 @@ img {
 @media (min-width: 900px) {
   .article-columns {
     display: grid;
-    grid-template-columns: 25% 1fr;
-    column-gap: var(--gap);
+    grid-template-columns: 350px 1fr;
+    column-gap: 45px;
     row-gap: 0;
     align-items: start;
   }
@@ -710,22 +776,6 @@ img {
     object-fit: cover;
   }
 
-  .photo-grid-num {
-    position: relative;
-    width: 100%;
-    height: 100%;
-  }
-  .photo-grid-num-badge {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    background: rgba(0, 0, 0, 0.7);
-    color: #fff;
-    padding: 5px;
-    font-size: 10px;
-
-    display: none !important;
-  }
   .photo-grid-wrap.custom-2-row-6-col > :nth-child(1) {
     grid-area: one;
   }
@@ -1076,7 +1126,7 @@ main {
   margin-top: 0px;
 }
 
-#page-16 .blue-section{
+#page-16 .blue-section {
   max-width: 350px;
   text-align: center;
 
@@ -1086,25 +1136,24 @@ main {
   align-items: center;
   gap: 5px;
 }
-#page-16 .blue-section img{
+#page-16 .blue-section img {
   max-width: 200px;
   margin-bottom: 10px;
 }
 #page-16 .blue-section b,
-#page-16 .blue-section p{
+#page-16 .blue-section p {
   text-align: left !important;
   margin: 0 !important;
   font-size: 14px;
   width: 100%;
   display: block;
 }
-#page-16 .blue-section a{
+#page-16 .blue-section a {
   margin: 0;
   padding-bottom: 0;
   border: none;
   text-decoration: underline;
 }
-
 
 @media (min-width: 900px) {
   #page-19 .presidents-report .article-images {
@@ -1119,26 +1168,23 @@ main {
     grid-template-columns: 50% 1fr !important;
   }
 }
-  #page-19  blockquote {
+#page-19 blockquote {
   border-left: 2px solid var(--navy);
   padding-left: 20px;
   padding-right: 40px;
   margin: 20px 0;
   font-family: "constantia", sans-serif;
-  }
+}
 
-#page-25 .photo-grid-wrap{
+#page-25 .photo-grid-wrap {
   /* grid-template-columns: 1fr 3fr !important; */
-
 }
 
 @media (max-width: 900px) {
-  #page-25 .photo-grid-wrap img{
-  height: 300px !important;
+  #page-25 .photo-grid-wrap img {
+    height: 300px !important;
+  }
 }
-
-}
-
 
 /* PAGE 11 AND 12 */
 article.academia h2,
@@ -1159,7 +1205,7 @@ article.sport h4 {
   margin: 5px 0;
 }
 article.sport .article-head {
-margin-bottom: 15px;
+  margin-bottom: 15px;
 }
 
 /* PAGE 15 */
@@ -1386,7 +1432,7 @@ dd {
   font-family: "Roboto", sans-serif;
   font-size: var(--fs-small);
 }
- dt {
+dt {
   font-weight: 700 !important;
   color: var(--navy) !important;
   margin-top: 0.7rem;
@@ -1593,8 +1639,8 @@ dd {
   break-inside: avoid;
   padding: 0.3rem 20px;
   border: 1px solid #8fa7ab;
-  border-top: .5px solid #8fa7ab;
-  border-bottom: .5px solid #8fa7ab;
+  border-top: 0.5px solid #8fa7ab;
+  border-bottom: 0.5px solid #8fa7ab;
   background-color: #d0dfe0;
 }
 .donor-list li:nth-child(even) {
@@ -1607,10 +1653,10 @@ dd {
   margin-top: 1.5rem;
 }
 .sport-layout p,
-.sport-layout h3{
+.sport-layout h3 {
   font-size: 16px;
 }
-.sport-layout h3{
+.sport-layout h3 {
   text-transform: uppercase;
 }
 
@@ -1660,16 +1706,14 @@ dd {
   background: #19334712;
   font-family: "Roboto", sans-serif;
   text-transform: uppercase;
-  font-size: 1rem;
+  font-size: 14px;
   color: #454547;
   text-decoration: none;
   white-space: nowrap;
   border-radius: 0 !important;
-
-  
 }
 .sport-nav a.active {
-  background: #EEA12C16;
+  background: #eea12c16;
 }
 .sport-item {
   scroll-margin-top: 10px;
@@ -1677,8 +1721,8 @@ dd {
 @media (min-width: 900px) {
   .sport-layout {
     display: grid;
-    grid-template-columns: 230px 1fr;
-    gap: 2.5rem;
+    grid-template-columns: 350px 1fr;
+    gap: 45px;
     align-items: start;
   }
   .sport-nav {
@@ -1702,10 +1746,10 @@ dd {
   margin-top: 1.5rem;
 }
 .academia-layout p,
-.academia-layout h3{
+.academia-layout h3 {
   font-size: 16px;
 }
-.academia-layout h3{
+.academia-layout h3 {
   text-transform: uppercase;
 }
 
@@ -1749,20 +1793,24 @@ dd {
   display: none;
 }
 .academia-nav a {
-  display: block;
+  display: flex;
+  align-items: center;
   flex: 0 0 auto;
   padding: 0.5rem 1rem;
   background: #19334712;
   font-family: "Roboto", sans-serif;
   text-transform: uppercase;
-  font-size: 1rem;
+  font-size: 14px;
+  line-height: 1.2;
   color: #454547;
   text-decoration: none;
   white-space: nowrap;
   border-radius: 0 !important;
+  min-height: 40px;
+  transition: background 0.2s ease-in-out;
 }
 .academia-nav a.active {
-  background: #638E4616;
+  background: #638e4640;
 }
 .academia-item {
   scroll-margin-top: 10px;
@@ -1770,7 +1818,7 @@ dd {
 @media (min-width: 900px) {
   .academia-layout {
     display: grid;
-    grid-template-columns: 230px 1fr;
+    grid-template-columns: 350px 1fr;
     gap: 2.5rem;
     align-items: start;
   }
@@ -1795,10 +1843,10 @@ dd {
   margin-top: 1.5rem;
 }
 .arts-layout p,
-.arts-layout h3{
+.arts-layout h3 {
   font-size: 16px;
 }
-.arts-layout h3{
+.arts-layout h3 {
   text-transform: uppercase;
 }
 
@@ -1855,7 +1903,7 @@ dd {
   border-radius: 0 !important;
 }
 .arts-nav a.active {
-  background: #F15C3416;
+  background: #f15c3416;
 }
 .arts-item {
   scroll-margin-top: 10px;
@@ -1863,7 +1911,7 @@ dd {
 @media (min-width: 900px) {
   .arts-layout {
     display: grid;
-    grid-template-columns: 230px 1fr;
+    grid-template-columns: 350px 1fr;
     gap: 2.5rem;
     align-items: start;
   }
@@ -1888,10 +1936,10 @@ dd {
   margin-top: 1.5rem;
 }
 .events-layout p,
-.events-layout h3{
+.events-layout h3 {
   font-size: 16px;
 }
-.events-layout h3{
+.events-layout h3 {
   text-transform: uppercase;
 }
 
@@ -1948,7 +1996,7 @@ dd {
   border-radius: 0 !important;
 }
 .events-nav a.active {
-  background: #A71E5616;
+  background: #a71e5616;
 }
 .events-item {
   scroll-margin-top: 10px;
@@ -1956,7 +2004,7 @@ dd {
 @media (min-width: 900px) {
   .events-layout {
     display: grid;
-    grid-template-columns: 230px 1fr;
+    grid-template-columns: 350px 1fr;
     gap: 2.5rem;
     align-items: start;
   }
@@ -2043,24 +2091,53 @@ dd {
 }
 
 /* prev/next arrows — sit beside the floating pager, same styling, every breakpoint */
+.slide-nav.is-disabled,
+.header-page-nav.is-disabled {
+  opacity: 0.3;
+  pointer-events: none;
+}
 .slide-nav {
   display: flex;
   align-items: center;
   justify-content: center;
   flex: 0 0 auto;
-  width: 2.6rem;
+  /* width: 2.6rem;
   height: 2.6rem;
   border-radius: 50%;
-  border: 1px solid var(--gold-light);
-  background: var(--navy-deep);
-  color: #fff;
-  font-size: 1.2rem;
+  border: 1px solid var(--gold-light);*/
+  background: transparent;
+  border: none;
+  color: var(--navy);
+  font-size: 16px;
   cursor: pointer;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  font-family: "Constantia", sans-serif;
+  white-space: nowrap;
+}
+@media (min-width: 900px) {
+  .slide-nav {
+    font-size: 24px;
+  }
+}
+@media (max-width: 600px) {
+  .slide-nav {
+    font-size: 0;
+    padding: 30px;
+    text-decoration: none !important;
+    width: 60px;
+  }
+  .slide-nav.prev::before {
+    content: '‹';
+    font-size: 30px;
+  }
+  .slide-nav.next::before {
+    content: '›';
+    font-size: 30px;
+  }
 }
 .slide-nav:hover {
-  background: var(--gold);
-  border-color: var(--gold);
+  text-decoration: underline;
+  /* background: var(--gold); */
+  /* border-color: var(--gold); */
 }
 
 /* =========================================================
@@ -2069,18 +2146,53 @@ dd {
 .mobile-pager {
   position: fixed;
   left: 50%;
-  bottom: calc(1rem + env(safe-area-inset-bottom));
-  transform: translateX(-50%);
+  bottom: 0;
   z-index: 1;
   font-family: "Roboto", sans-serif;
   display: flex;
-  flex-direction: column;
   align-items: center;
+  flex-direction: column;
+  padding: 0 20px;
+
+  background-color: #eaebec;
+  width: 100vw;
+  height: 140px;
+
+  /* desktop: overlays the content instead of reserving space for it — no
+     padding-bottom hack needed on the sections. Starts slid fully below
+     the viewport; mobile-pager.js adds .near-end once scroll position is
+     within 300px of the bottom of the CURRENT spread. */
+  transform: translate(-50%, 100%);
+  transition: transform 0.3s ease;
+}
+.mobile-pager.near-end {
+  transform: translate(-50%, 0);
+}
+@media (max-width: 899px) {
+  /* mobile: always fixed at the bottom, no hide/reveal-on-scroll — unlike
+     desktop, where the pager slides up only near the end of a page. */
+  .mobile-pager {
+    transform: translate(-50%, 0);
+    transition: none;
+  }
 }
 .pager-row {
-  display: flex;
+  /* "‹ Previous Story" is wider than "Next Story ›", so centering this as a
+     flex row (content-width-dependent) pushes the middle toggle off-center.
+     A grid with two equal 1fr side tracks keeps the toggle truly centered
+     regardless of how long either button's label is. */
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: 0.6rem;
+  width: 100%;
+  height: 100%;
+}
+.pager-row .slide-nav.prev {
+  justify-self: start;
+}
+.pager-row .slide-nav.next {
+  justify-self: end;
 }
 .pager-sheet {
   background: var(--navy-deep);
@@ -2129,39 +2241,55 @@ dd {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  background: var(--navy-deep);
+  background: transparent;
   color: #fff;
   border: none;
-  border: 1px solid var(--gold-light);
+  /* border: 1px solid var(--gold-light); */
   border-radius: 999px;
   padding: 0.7rem;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  /* box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25); */
   cursor: pointer;
   width: 200px;
+  margin: 0 auto;
 }
 .pager-num {
   font-weight: 700;
-  font-size: 0.85rem;
+  font-size: 16px;
 }
 .pager-sep {
-  opacity: 0.5;
   font-size: 0.8rem;
+  transform: translateY(5px);
+  color: var(--navy);
 }
 .pager-name {
   display: block;
-  font-size: 0.62rem;
-  color: var(--gold-light);
+  font-size: 16px;
+  font-family: "Constantia", sans-serif;
+  color: var(--navy);
   max-width: 46vw;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  height: 20px;
 }
+
+@media (min-width: 900px) {
+  .pager-num {
+    font-size: 24px;
+  }
+
+  .pager-name{
+    display: none;
+  }
+}
+
 .pager-text {
   display: flex;
   flex-direction: column;
   align-items: center;
   line-height: 1.15;
   width: 100%;
+  transform: translateY(-5px);
 }
 .pager-page-wrapper {
   display: flex;
@@ -2169,6 +2297,18 @@ dd {
   justify-content: center;
   width: 50%;
   margin: 5px 0;
+  font-family: "Constantia", sans-serif;
+  color: var(--navy);
+}
+
+.footer {
+  background-color: #193347;
+  width: 100vw;
+  padding: .5rem 1rem;
+  text-align: center;
+  color: #fff;
+  font-family: "Constantia", sans-serif;
+  font-size: 1rem;
 }
 
 /* ---------- photo gallery lightbox ---------- */
@@ -2301,23 +2441,26 @@ html.lb-open {
 
 .blue-section.online-access .frame {
   padding: 20px;
-  border:1px solid  #ffffff20;
+  border: 1px solid #ffffff20;
   margin-bottom: 20px;
 }
 
 @media (max-width: 900px) {
+  .blue-section.online-access .article-columns > .article-images {
+    order: 1 !important;
 
-.blue-section.online-access .article-columns > .article-images {
-  order: 1 !important;
-
-  display: flex;
-  justify-content: center;
-}
+    display: flex;
+    justify-content: center;
+  }
 }
 
 #page-26 .photo-grid-wrap .ad-card,
-  #page-26 .photo-grid-wrap img{
+#page-26 .photo-grid-wrap img {
   height: 100%;
   width: 100%;
   aspect-ratio: initial !important;
+}
+
+#page-27{
+  padding-bottom: 200px;
 }
