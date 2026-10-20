@@ -61,8 +61,8 @@ img {
   /* width: 100%; */
   max-width: 100%;
   display: block;
-  filter: contrast(0.95) saturate(0.6);
-  -webkit-filter: contrast(0.95) saturate(0.6);
+  /* filter: contrast(0.95) saturate(0.6);
+  -webkit-filter: contrast(0.95) saturate(0.6); */
 }
 .ui {
   font-family: "Roboto", system-ui, sans-serif;
@@ -520,6 +520,16 @@ color: #fff
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: stretch;
+    /* .hero-photo uses aspect-ratio: auto in this context (below), so
+       without a fixed height here the grid row's height comes from each
+       photo's own natural aspect ratio and varies page to page. A
+       `min-height` alone only sets a floor - a page whose photo is
+       naturally taller than that still grows past it and stands out
+       from the rest. Fixed `height` (not min-height) + overflow:hidden
+       as a safety clip actually caps it, and .hero-photo's existing
+       object-fit:cover crops every photo to fill that same height. */
+    height: 600px;
+    overflow: hidden;
   }
   .hero-split .hero-photo {
     height: 100%;
@@ -999,12 +1009,22 @@ color: #fff
   grid-area: eight;
 }
 
+/* captions live in the lightbox only (data-caption on the <img>, read by
+   lightbox.js) - the on-page <p class="photo-caption"> is not shown here,
+   it's kept in the DOM only as the source text data-caption was copied
+   from. Exception: .family-tree-hint, which isn't a photo description,
+   it's an on-page instruction telling the reader the image is clickable -
+   that has to stay visible outside the lightbox for it to do its job. */
 .photo-caption {
+  display: none;
+}
+.photo-caption.family-tree-hint {
+  display: block;
   font-family: "Roboto", sans-serif;
-  font-size: var(--fs-small);
-  color: var(--muted);
-  margin-top: 0.6rem !important;
-  /* max-width: 46rem; */
+  color: var(--navy);
+  font-weight: 700;
+  font-size: var(--fs-body);
+  margin-top: 0.6rem;
 }
 
 /* photo-grids inside the article image wrapper always stack in one column,
@@ -2108,65 +2128,6 @@ dt {
 .family-tree {
   margin: 1.5rem 0 2rem;
 }
-.family-tree-intro {
-  font-family: "Roboto", sans-serif;
-  font-size: var(--fs-small);
-  font-style: italic;
-  color: var(--muted);
-  margin: 0 0 1.2rem;
-  max-width: 60rem;
-}
-.family-tree-branch {
-  border-left: 3px solid var(--gold);
-  background: #f8f6f1;
-  padding: 0.9rem 1.2rem;
-  margin-bottom: 1rem;
-  border-radius: 0 6px 6px 0;
-}
-.family-tree-branch h4 {
-  font-family: "constantia", serif;
-  color: var(--navy);
-  font-size: 1.05rem;
-  margin: 0 0 0.6rem;
-}
-.family-tree-gens {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-.family-tree-gen {
-  font-family: "Roboto", sans-serif;
-  font-size: var(--fs-small);
-  color: var(--ink);
-  padding-left: 0;
-  position: relative;
-}
-.family-tree-gen:not(:first-child) {
-  padding-left: 1.1rem;
-  border-left: 1px dashed var(--navy-light);
-  margin-left: 0.3rem;
-}
-.family-tree-gen .gen-label {
-  display: inline-block;
-  font-family: "Roboto", sans-serif;
-  font-weight: 700;
-  font-size: 0.68rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--muted);
-  margin-right: 0.5rem;
-}
-.family-tree-gen .person {
-  color: var(--navy-deep);
-  font-weight: 600;
-}
-.family-tree-gen .spouse {
-  color: var(--muted);
-}
-.family-tree-gen .sep {
-  color: var(--navy-light);
-  margin: 0 0.4rem;
-}
 
 /* ---------- footer ---------- */
 .site-footer {
@@ -2455,6 +2416,9 @@ dt {
   font-family: "Constantia", sans-serif;
   font-size: 1rem;
 }
+.mobile-pager.is-cover .footer {
+  display: none;
+}
 
 /* ---------- photo gallery lightbox ---------- */
 .photo-grid img,
@@ -2559,6 +2523,35 @@ html.lb-open {
   right: 0.8rem;
   top: 50%;
   transform: translateY(-50%);
+}
+.lb-zoom-controls {
+  position: absolute;
+  bottom: 2.6rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.6rem;
+  z-index: 99;
+}
+.lb-zoom-controls .lb-btn {
+  position: static;
+  width: 2.4rem;
+  height: 2.4rem;
+  font-size: 1.3rem;
+}
+.lb-btn:disabled,
+.lb-btn:disabled:hover {
+  opacity: 0.35;
+  cursor: default;
+  background: var(--navy-deep);
+  border-color: var(--gold-light);
+  color: #fff;
+}
+.lb-img.zoomed {
+  cursor: grab;
+}
+.lb-img.zoomed.dragging {
+  cursor: grabbing;
 }
 
 .blue-section {

@@ -484,3 +484,63 @@ scrolling page, even though nothing about it looks "fixed" in the CSS.
 If a request wants one element to appear only at the true end of the
 whole site (the last page), nest it inside that LAST page's own content
 instead of adding it as a sibling after `</main>`.
+
+## 16. `.hero-split` row height must be fixed in CSS, not patched per page
+
+`.hero-photo` switches to `aspect-ratio: auto` inside `.hero-split` at
+`min-width:900px`, so with `align-items:stretch` on the grid, each hero
+page's row height is set by that specific photo's own natural aspect
+ratio — two hero pages end up visibly different heights even though the
+CSS is identical, purely because the source photos are shaped
+differently. Don't patch this one page at a time with an inline
+`style="min-height: 400px"` on `.hero-split` — that's what happened on
+both May and November's issues, and in both cases only a handful of
+pages got marked, leaving the rest inconsistent. Put the `min-height`
+directly on the shared `.hero-split` rule inside the
+`@media (min-width:900px)` block so every hero page gets it, and don't
+leave inline overrides lying around once that's done.
+
+## 17. Swapping in a later externally-compressed image batch
+
+A compression pass sometimes arrives after the main build, as a staging
+folder (seen so far as `compressed-imgs/`, and earlier as a
+`Microsite JPEGs/` folder) dropped straight into
+`publication-web-resources/image/`. Match each staged file to its real
+destination by **normalized filename** (lowercase, strip everything but
+letters and digits) rather than assuming identical spelling — the
+external batch's names are typically close but not exact: hyphens where
+the project uses underscores, a stray trailing "-1" de-dup digit the
+destination doesn't have, or a long filename truncated differently on
+each side from OS path-length limits. Build the match with cascading
+strategies — exact normalized match, then strip-trailing-digit loose
+match, then long-name prefix match for the truncated cases — and print
+the full mapping for a sanity check before touching any file. Resolve
+anything still ambiguous by hand (a different file extension on the
+destination, e.g. `.png` vs the new batch's `.jpg`; or a photo with no
+existing counterpart at all) — ask the user rather than guessing where
+an unmatched new image belongs.
+
+Since this site's HTML only ever references the `.webp` in `src=`
+(the `.jpg`/`.png` sitting next to it is backing/archival, never linked
+directly), a same-basename extension change on the source side needs
+**no HTML edit at all** — delete the old source file, write the new
+one, and regenerate that single `.webp`. No cwebp/ImageMagick/PIL is
+available on this machine; install `sharp` as a throwaway dependency in
+the scratchpad directory (`npm init -y && npm install sharp`, then
+`require()` it by absolute path) — never inside the project itself.
+Clean up the staging folder's consumed files once done.
+
+## 18. Table-of-contents nav column categorization
+
+The desktop header's `.toc-nav` groups pages into labeled columns
+(e.g. "Lead Stories" / "Departments" / "Events & Giving" / "Old Boys'
+Association" on the November issue). "Lead Stories" means genuine
+narrative FEATURE articles only — editorial/opinion pieces, the
+headline human-interest stories (Contents, Headmaster's reflections,
+Board report, and similar). Recurring whole-of-school content
+categories that are also major sections — Academia, Extracurricular,
+Arts and Culture, Sport, Student Stories — are NOT lead stories even
+though they're prominent, and belong in "Departments" alongside the
+organizational departments instead. Get this split right on the first
+build of a new issue's nav rather than defaulting every section into
+the first column.

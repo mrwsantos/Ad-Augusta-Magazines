@@ -66,6 +66,10 @@
 		currentEl.textContent = pad(i + 1);
 		nameEl.textContent = PAGES[i].title;
 		links.forEach(function (a, li) { a.classList.toggle('active', li === i); });
+		// the cover (page-01) has its own on-page branding, so the "Ad Augusta |
+		// November 2026" footer strip inside the pager is redundant there - hide
+		// it only while the cover is the active page.
+		pager.classList.toggle('is-cover', i === 0);
 	}
 	setActive(0);
 
