@@ -1406,19 +1406,19 @@ dd {
   }
 }
 
-.ad-card {
+.promo-card {
   border: 1px solid var(--line);
   border-radius: 4px;
   overflow: hidden;
   margin: 0 auto;
 }
-.ad-card img {
+.promo-card img {
   width: 100%;
 }
-.ad-card a {
+.promo-card a {
   display: block;
 }
-.ad-label {
+.promo-label {
   font-family: "Roboto", sans-serif;
   font-size: 0.65rem;
   letter-spacing: 0.12em;
@@ -2483,7 +2483,7 @@ html.lb-open {
   }
 }
 
-#page-26 .photo-grid-wrap .ad-card,
+#page-26 .photo-grid-wrap .promo-card,
 #page-26 .photo-grid-wrap img {
   height: 100%;
   width: 100%;

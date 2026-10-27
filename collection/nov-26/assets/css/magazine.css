@@ -1422,19 +1422,42 @@ dd {
   }
 }
 
-.ad-card {
+.promo-card {
   border: 1px solid var(--line);
   border-radius: 4px;
   overflow: hidden;
   margin: 0 auto;
 }
-.ad-card img {
+.promo-card img {
   width: 100%;
 }
-.ad-card a {
+.promo-card a {
   display: block;
 }
-.ad-label {
+/* a masonry-style grid of ads with no fixed per-card max-width - each card
+   keeps its own native aspect ratio (no forced height), and multi-column
+   layout packs them tightly instead of leaving gaps like a strict grid
+   would when the cards are different heights. Single column (full width)
+   on mobile; columns at least 500px wide from the desktop breakpoint up. */
+.ads-grid {
+  margin-top: 1rem;
+}
+.ads-grid .promo-card {
+  margin-bottom: 1.5rem;
+}
+.ads-grid .promo-card:last-child {
+  margin-bottom: 0;
+}
+@media (min-width: 900px) {
+  .ads-grid {
+    column-width: 500px;
+    column-gap: 1.5rem;
+  }
+  .ads-grid .promo-card {
+    break-inside: avoid;
+  }
+}
+.promo-label {
   font-family: "Roboto", sans-serif;
   font-size: 0.65rem;
   letter-spacing: 0.12em;
@@ -2614,7 +2637,7 @@ html.lb-open {
   }
 }
 
-#page-26 .photo-grid-wrap .ad-card,
+#page-26 .photo-grid-wrap .promo-card,
 #page-26 .photo-grid-wrap img {
   height: 100%;
   width: 100%;

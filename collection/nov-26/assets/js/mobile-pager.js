@@ -27,8 +27,7 @@
 		{ id: 'page-25', title: 'From the Archives' },
 		{ id: 'page-26', title: 'Grammar Families' },
 		{ id: 'page-27', title: 'Obituaries' },
-		{ id: 'page-28', title: 'Sponsors and Partners' },
-		{ id: 'page-29', title: 'Advertisement' }
+		{ id: 'page-28', title: 'Sponsors and Partners' }
 	];
 
 	var pager = document.getElementById('mobilePager');
