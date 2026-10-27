@@ -402,7 +402,7 @@ color: #fff
      content needs enough bottom padding to clear the 129px bar when fully
      scrolled — otherwise the last bit of every page ends up hidden behind it. */
   .spread {
-    padding-bottom: 150px;
+    padding-bottom: 250px;
   }
   /* #page-01 (.cover) sets its own `padding` shorthand further down this
      file, which overwrites .spread's padding-bottom above (same specificity,
@@ -466,13 +466,13 @@ color: #fff
 
 .hero-photo {
   width: 100%;
-  aspect-ratio: 16/10;
   object-fit: cover;
   object-position: top;
 }
 @media (min-width: 900px) {
   .hero-photo {
     max-height: 80vh;
+    aspect-ratio: 16/10;
   }
 }
 .hero-photo.tall {
@@ -517,31 +517,24 @@ color: #fff
 
 @media (min-width: 900px) {
   .hero-split {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: stretch;
-    /* .hero-photo uses aspect-ratio: auto in this context (below), so
-       without a fixed height here the grid row's height comes from each
-       photo's own natural aspect ratio and varies page to page. A
-       `min-height` alone only sets a floor - a page whose photo is
-       naturally taller than that still grows past it and stands out
-       from the rest. Fixed `height` (not min-height) + overflow:hidden
-       as a safety clip actually caps it, and .hero-photo's existing
-       object-fit:cover crops every photo to fill that same height. */
+    display: flex;
     height: 600px;
-    overflow: hidden;
   }
   .hero-split .hero-photo {
+    width: 50%;
     height: 100%;
     max-height: none;
     aspect-ratio: auto;
+    flex-shrink: 0;
   }
   .hero-panel {
+    width: 50%;
     background: var(--navy);
     display: flex;
     flex-direction: column;
     justify-content: center;
     padding: var(--pad-y);
+    overflow: hidden;
   }
   .hero-panel .page-kicker {
     color: var(--gold-light);
@@ -688,7 +681,8 @@ color: #fff
 }
 .photo-grid-wrap img {
   width: 100%;
-  aspect-ratio: 4/3;
+  height: 100%;
+  /* aspect-ratio: 4/3; */
   object-fit: cover;
   object-position: top;
   display: block;
@@ -700,7 +694,7 @@ color: #fff
 /* a lone photo shouldn't stretch to fill the column — give it a sensible
    standalone size instead of growing edge to edge */
 .photo-grid:has(> .photo-grid-wrap > :is(img, .tall):only-child) {
-  max-width: 500px;
+  /* max-width: 500px; */
 }
 
 @media (min-width: 640px) {
@@ -1048,7 +1042,7 @@ color: #fff
 .article-images .photo-grid-wrap img {
   width: 100% !important;
   height: auto !important;
-  aspect-ratio: 4/3 !important;
+  /* aspect-ratio: 4/3 !important; */
   object-fit: cover;
 }
 .article-images .photo-grid-wrap .tall img {
@@ -1678,12 +1672,12 @@ dt {
   display: block;
   margin-top: 1.5rem;
 }
-.sport-layout p,
-.sport-layout h3 {
+.sport-layout p {
   font-size: 16px;
 }
 .sport-layout h3 {
   text-transform: uppercase;
+  font-size: 20px;
 }
 
 .sport-nav {
@@ -1742,7 +1736,7 @@ dt {
   background: #eea12c16;
 }
 .sport-item {
-  scroll-margin-top: 10px;
+  scroll-margin-top: 20px;
 }
 @media (min-width: 900px) {
   .sport-layout {
@@ -1771,12 +1765,13 @@ dt {
   display: block;
   margin-top: 1.5rem;
 }
-.academia-layout p,
-.academia-layout h3 {
+.academia-layout p{
   font-size: 16px;
 }
 .academia-layout h3 {
   text-transform: uppercase;
+  font-size: 20px;
+
 }
 
 .academia-nav {
@@ -1839,7 +1834,7 @@ dt {
   background: #638e4640;
 }
 .academia-item {
-  scroll-margin-top: 10px;
+  scroll-margin-top: 20px;
 }
 @media (min-width: 900px) {
   .academia-layout {
@@ -1868,12 +1863,12 @@ dt {
   display: block;
   margin-top: 1.5rem;
 }
-.arts-layout p,
-.arts-layout h3 {
+.arts-layout p{
   font-size: 16px;
 }
 .arts-layout h3 {
   text-transform: uppercase;
+  font-size: 20px;
 }
 
 .arts-nav {
@@ -1932,7 +1927,7 @@ dt {
   background: #f15c3416;
 }
 .arts-item {
-  scroll-margin-top: 10px;
+  scroll-margin-top: 20px;
 }
 @media (min-width: 900px) {
   .arts-layout {
@@ -1961,12 +1956,13 @@ dt {
   display: block;
   margin-top: 1.5rem;
 }
-.events-layout p,
-.events-layout h3 {
+.events-layout p {
   font-size: 16px;
 }
 .events-layout h3 {
   text-transform: uppercase;
+  font-size: 20px;
+
 }
 
 .events-nav {
@@ -2025,7 +2021,7 @@ dt {
   background: #a71e5616;
 }
 .events-item {
-  scroll-margin-top: 10px;
+  scroll-margin-top: 20px;
 }
 @media (min-width: 900px) {
   .events-layout {
@@ -2053,12 +2049,13 @@ dt {
   display: block;
   margin-top: 1.5rem;
 }
-.news-layout p,
-.news-layout h3 {
+.news-layout p{
   font-size: 16px;
 }
 .news-layout h3 {
   text-transform: uppercase;
+  font-size: 20px;
+
 }
 
 .news-nav {
@@ -2100,7 +2097,7 @@ dt {
   background: #19334722;
 }
 .news-item {
-  scroll-margin-top: 10px;
+  scroll-margin-top: 20px;
 }
 @media (min-width: 900px) {
   .news-layout {
@@ -2441,7 +2438,15 @@ html.lb-open {
   align-items: center;
   justify-content: center;
   background: rgba(4, 22, 48, 0.94);
-  padding: 3.5rem 1rem 3rem;
+  /* .lb-zoom-controls/.lb-count sit outside <figure>, absolutely positioned
+     off the viewport bottom (not the figure), so they don't get pushed
+     down by a tall caption - the figure just has to stay out of their way.
+     The figure is centered in this box's content area, so what actually
+     keeps it clear of the controls is this bottom padding, not .lb-img's
+     own max-height: the controls' top edge sits ~5rem above the viewport
+     bottom (2.6rem offset + 2.4rem button height), so padding-bottom needs
+     to reserve at least that much, plus a little breathing room. */
+  padding: 3.5rem 1rem 5.5rem;
 }
 .lightbox[hidden],
 .lightbox [hidden] {
@@ -2455,19 +2460,36 @@ html.lb-open {
   flex-direction: column;
   align-items: center;
   gap: 0.9rem;
+  /* last-resort safety clip: nothing inside should ever visually escape
+     this box and land on the zoom controls outside it. */
+  overflow: hidden;
 }
 .lb-img {
   max-width: 100%;
-  max-height: calc(100vh - 12rem);
-  max-height: calc(100dvh - 12rem);
+  max-height: calc(100vh - 14rem);
+  max-height: calc(100dvh - 14rem);
   width: auto;
   height: auto;
   object-fit: contain;
   border-radius: 3px;
   background: #0e2138;
+  /* flex items default to a content-based min-height, which stops a tall
+     image from shrinking below its own intrinsic size even when the
+     caption needs the room - min-height:0 lets flex-shrink actually do
+     its job so the caption always wins the space it needs. */
+  min-height: 0;
+  flex-shrink: 1;
 }
 .lb-caption {
   max-width: 60rem;
+  /* long captions used to grow past the reserved space below the image and
+     end up hidden under the zoom controls (position:absolute, anchored to
+     the viewport bottom, so they never move out of the way). Capping the
+     caption's own height and scrolling the overflow keeps it inside its
+     slot no matter how long the text is. */
+  max-height: 4.5rem;
+  overflow-y: auto;
+  flex-shrink: 0;
   color: #e6ecf3;
   font-family: "Roboto", sans-serif;
   font-size: var(--fs-body);
@@ -2498,7 +2520,7 @@ html.lb-open {
   font-size: 1.6rem;
   line-height: 1;
   cursor: pointer;
-  padding-bottom: 2px;
+  padding-bottom: 4px;
   z-index: 99;
 }
 .lb-btn:hover,

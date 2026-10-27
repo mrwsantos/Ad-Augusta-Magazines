@@ -27,7 +27,7 @@
 		}
 
 		function computeActiveIndex() {
-			var refY = desktopMq.matches ? 20 : 120;
+			var refY = desktopMq.matches ? 30 : 120;
 			var active = 0;
 			for (var i = 0; i < pairs.length; i++) {
 				if (topOf(pairs[i].el) <= refY) {
