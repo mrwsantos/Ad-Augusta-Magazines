@@ -83,8 +83,18 @@
 		sheet.hidden = false;
 		toggle.setAttribute('aria-expanded', 'true');
 	}
+	// on mobile, the pager's own center button has no page-list sheet of its
+	// own anymore — it should just open the same menu the header hamburger
+	// (.menu-toggle) opens, since that's reachable but out of thumb reach
+	// down at the bottom pager bar.
+	var menuToggle = document.querySelector('.menu-toggle');
+	var mobileMq = window.matchMedia('(max-width: 899px)');
 	toggle.addEventListener('click', function (e) {
 		e.stopPropagation();
+		if (mobileMq.matches && menuToggle) {
+			menuToggle.click();
+			return;
+		}
 		if (!sheet) return;
 		if (sheet.hidden) openSheet(); else closeSheet();
 	});

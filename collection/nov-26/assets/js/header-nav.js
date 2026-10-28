@@ -19,7 +19,7 @@
 	});
 
 	nav.addEventListener('click', function (e) {
-		if (e.target.closest('a')) setOpen(false);
+		if (e.target.closest('a') || e.target.closest('.toc-nav-close')) setOpen(false);
 	});
 
 	document.addEventListener('keydown', function (e) {

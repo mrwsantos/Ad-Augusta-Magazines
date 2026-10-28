@@ -117,6 +117,10 @@ img {
   justify-content: center;
   gap: 10px;
   transition: all 0.2s ease;
+
+  @media (max-width: 899px) {
+    display: none;
+  }
 }
 .menu-toggle:hover {
   background: var(--gold);
@@ -159,6 +163,10 @@ img {
   justify-content: space-between;
   padding: 0 0 0 var(--pad-x);
   transition: background-color 0.2s ease;
+
+    @media(max-width: 899px) {
+    display: none;
+  }
 }
 .header-wrapper.opened {
   background-color: var(--navy);
@@ -227,7 +235,7 @@ img {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding-bottom:4px;
+    padding-bottom: 4px;
   }
   .header-page-nav:hover {
     color: var(--gold);
@@ -255,9 +263,9 @@ img {
     /* color:#FFF; */
   }
 }
- 
-.header-wrapper.opened .header-category{
-color: #fff
+
+.header-wrapper.opened .header-category {
+  color: #fff;
 }
 
 .brand {
@@ -301,12 +309,39 @@ color: #fff
 
   max-height: calc(100vh - 102px);
   overflow-y: auto;
-
+  
   z-index: 10;
+  
+  @media (max-width: 899px) {
+    top: 0;
+    max-height: calc(100vh - 80px);
+    padding-top: 80px;
+    padding-right: 40px;
+    }
 }
 .toc-nav a {
   text-decoration: none;
   color: var(--muted);
+}
+.toc-nav-close {
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  z-index: 11;
+
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--gold);
+
+  font-size: 2.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.toc-nav-close:hover {
+  color: var(--navy);
 }
 .toc-nav a:hover {
   color: var(--navy);
@@ -385,6 +420,11 @@ color: #fff
   margin-left: 0px;
   padding-left: 20px;
   border-left: 1px solid #2a4a64;
+
+    @media(max-width: 899px) {
+   padding-left: 0px;
+  border-left: none;
+  }
 }
 .toc-nav .column.old-boys li a {
   background-color: #0e3b5d;
@@ -395,6 +435,10 @@ color: #fff
 .spread {
   padding: 0 0 100px;
   border-bottom: 1px solid var(--line);
+
+  @media(max-width: 899px) {
+    padding-bottom: 0px;
+  }
 }
 @media (min-width: 900px) {
   /* each .spread scrolls its own content on desktop; the floating pager
@@ -410,7 +454,7 @@ color: #fff
      The footer/pager is permanently visible on this page (no real scrollable
      content to hide it during), so this needs to exactly clear its height. */
   #page-01 {
-    padding-bottom: 129px !important;
+    padding-bottom: 80px !important;
   }
 }
 /* Old Boys' News section (pages 19-26) */
@@ -428,6 +472,10 @@ color: #fff
 .spread.old-boys p {
   color: var(--muted);
 }
+.spread.old-boys .hero-panel p,
+.spread.old-boys .hero-panel cite {
+  color: #fff;
+}
 
 .spread .wrap {
   padding: var(--pad-y) var(--pad-x) 0;
@@ -440,7 +488,7 @@ color: #fff
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--muted);
   margin-bottom: 0.5rem;
 }
 
@@ -497,7 +545,7 @@ color: #fff
 @media (max-width: 899px) {
   .hero-panel[style] {
     padding-bottom: var(--pad-y);
-    min-height: 260px;
+    min-height: 160px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -547,7 +595,7 @@ color: #fff
     margin: 27px 0;
   }
   .hero-panel .deck {
-    color: #cbd5e0;
+    color: #fff;
     font-family: "constantia", serif;
     text-transform: uppercase;
     letter-spacing: 2%;
@@ -1188,13 +1236,6 @@ main {
     grid-template-columns: 50% 1fr !important;
   }
 }
-#page-19 blockquote {
-  border-left: 2px solid var(--navy);
-  padding-left: 20px;
-  padding-right: 40px;
-  margin: 20px 0;
-  font-family: "constantia", sans-serif;
-}
 
 #page-25 .photo-grid-wrap {
   /* grid-template-columns: 1fr 3fr !important; */
@@ -1759,7 +1800,7 @@ dt {
   background: #eea12c16;
 }
 .sport-item {
-  scroll-margin-top: 20px;
+  scroll-margin-top: 15px;
 }
 @media (min-width: 900px) {
   .sport-layout {
@@ -1788,13 +1829,12 @@ dt {
   display: block;
   margin-top: 1.5rem;
 }
-.academia-layout p{
+.academia-layout p {
   font-size: 16px;
 }
 .academia-layout h3 {
   text-transform: uppercase;
   font-size: 20px;
-
 }
 
 .academia-nav {
@@ -1857,7 +1897,7 @@ dt {
   background: #638e4640;
 }
 .academia-item {
-  scroll-margin-top: 20px;
+  scroll-margin-top: 15px;
 }
 @media (min-width: 900px) {
   .academia-layout {
@@ -1886,7 +1926,7 @@ dt {
   display: block;
   margin-top: 1.5rem;
 }
-.arts-layout p{
+.arts-layout p {
   font-size: 16px;
 }
 .arts-layout h3 {
@@ -1950,7 +1990,7 @@ dt {
   background: #f15c3416;
 }
 .arts-item {
-  scroll-margin-top: 20px;
+  scroll-margin-top: 15px;
 }
 @media (min-width: 900px) {
   .arts-layout {
@@ -1985,7 +2025,6 @@ dt {
 .events-layout h3 {
   text-transform: uppercase;
   font-size: 20px;
-
 }
 
 .events-nav {
@@ -1996,6 +2035,18 @@ dt {
   margin-bottom: 1.2rem;
   padding: 0.4rem 0;
 }
+
+@media(max-width: 899px) {
+  .academia-nav,
+  .arts-nav,
+  .sport-nav,
+  .events-nav,
+  .news-nav,
+  .news-nav{
+    display: none !important;
+  }
+}
+
 .events-nav-group {
   margin: 0 0 0.5rem;
   font-family: "Roboto", sans-serif;
@@ -2041,10 +2092,10 @@ dt {
   border-radius: 0 !important;
 }
 .events-nav a.active {
-  background: #a71e5616;
+  background: #19334722;
 }
 .events-item {
-  scroll-margin-top: 20px;
+  scroll-margin-top: 15px;
 }
 @media (min-width: 900px) {
   .events-layout {
@@ -2072,13 +2123,12 @@ dt {
   display: block;
   margin-top: 1.5rem;
 }
-.news-layout p{
+.news-layout p {
   font-size: 16px;
 }
 .news-layout h3 {
   text-transform: uppercase;
   font-size: 20px;
-
 }
 
 .news-nav {
@@ -2120,7 +2170,7 @@ dt {
   background: #19334722;
 }
 .news-item {
-  scroll-margin-top: 20px;
+  scroll-margin-top: 15px;
 }
 @media (min-width: 900px) {
   .news-layout {
@@ -2252,11 +2302,11 @@ dt {
     width: 60px;
   }
   .slide-nav.prev::before {
-    content: '‹';
+    content: "‹";
     font-size: 30px;
   }
   .slide-nav.next::before {
-    content: '›';
+    content: "›";
     font-size: 30px;
   }
 }
@@ -2282,7 +2332,7 @@ dt {
 
   background-color: #eaebec;
   width: 100vw;
-  height: 140px;
+  height: 80px;
 
   /* desktop: overlays the content instead of reserving space for it — no
      padding-bottom hack needed on the sections. Starts slid fully below
@@ -2290,6 +2340,14 @@ dt {
      within 300px of the bottom of the CURRENT spread. */
   transform: translate(-50%, 100%);
   transition: transform 0.3s ease;
+
+  @media (max-width: 599px) {
+  padding: 0 0px;
+
+  .slide-nav {
+        padding: 17px 30px 40px 30px;
+      }
+  }
 }
 .mobile-pager.near-end {
   transform: translate(-50%, 0);
@@ -2404,7 +2462,7 @@ dt {
     font-size: 24px;
   }
 
-  .pager-name{
+  .pager-name {
     display: none;
   }
 }
@@ -2430,14 +2488,15 @@ dt {
 .footer {
   background-color: #193347;
   width: 100vw;
-  padding: .5rem 1rem;
+  padding: 0.5rem 1rem;
   text-align: center;
   color: #fff;
   font-family: "Constantia", sans-serif;
   font-size: 1rem;
+  display: none;
 }
 .mobile-pager.is-cover .footer {
-  display: none;
+  /* display: none; */
 }
 
 /* ---------- photo gallery lightbox ---------- */
@@ -2644,6 +2703,119 @@ html.lb-open {
   aspect-ratio: initial !important;
 }
 
-#page-27{
+#page-27 {
   padding-bottom: 200px;
+
+    @media(max-width: 899px) {
+    padding-bottom: 0px;
+  }
+}
+
+article.spread.lead-stories {
+  .hero-panel {
+    .page-kicker {
+      display: none;
+    }
+    .hero-desk * {
+      color: #fff !important;
+    }
+  }
+
+  @media (min-width: 900px) {
+    .hero-split {
+      display: flex;
+      height: 800px;
+    }
+    .hero-photo {
+      /* object-position: bottom; */
+    }
+  }
+}
+
+.hero-mobile {
+  display: none !important;
+}
+@media (max-width: 900px) {
+  .hero-mobile {
+    display: block !important;
+  }
+  .hero-desk{
+    display: none !important;
+  }
+}
+.hero-desk {
+  position: relative;
+  height: 800px;
+  min-height: 800px;
+
+  img {
+    object-fit: cover;
+    object-position: 40% center;
+    width: 100%;
+    height: 100%;
+    display: block;
+    height: 800px;
+    min-height: 800px;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+  }
+
+  .text {
+    position: absolute;
+    top: 50%;
+    right: 8%;
+    transform: translateY(-50%);
+    color: #fff;
+    pointer-events: none;
+
+    max-width: 500px;
+    margin-left: auto;
+
+    @media (min-width: 1200px) {
+      right: 15vw;
+    }
+
+    * {
+      color: #fff !important;
+    }
+  }
+}
+
+#page-04 .hero-desk .text *,
+#page-19 .hero-desk .text * {
+  color: var(--navy) !important;
+}
+
+#page-01 {
+  position: relative;
+
+  .only-mobile {
+    display: none;
+
+    @media (max-width: 899px) {
+      display: block;
+
+      position: absolute;
+      top: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+    }
+
+    img{
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 899px) {
+    .cover-left {
+      min-height: 100vh !important;
+    }
+    .cover-right {
+      display: none;
+    }
+  }
 }
