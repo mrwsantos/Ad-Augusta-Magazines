@@ -117,6 +117,10 @@ img {
   justify-content: center;
   gap: 10px;
   transition: all 0.2s ease;
+
+  @media (max-width: 899px) {
+    display: none;
+  }
 }
 .menu-toggle:hover {
   background: var(--gold);
@@ -159,6 +163,10 @@ img {
   justify-content: space-between;
   padding: 0 0 0 var(--pad-x);
   transition: background-color 0.2s ease;
+
+  @media (max-width: 899px) {
+    display: none;
+  }
 }
 .header-wrapper.opened {
   background-color: var(--navy);
@@ -303,10 +311,37 @@ color: #fff
   overflow-y: auto;
 
   z-index: 10;
+
+  @media (max-width: 899px) {
+    top: 0;
+    max-height: calc(100vh - 80px);
+    padding-top: 80px;
+    padding-right: 40px;
+  }
 }
 .toc-nav a {
   text-decoration: none;
   color: var(--muted);
+}
+.toc-nav-close {
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  z-index: 51;
+
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--gold);
+
+  font-size: 2.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.toc-nav-close:hover {
+  color: #fff;
 }
 .toc-nav a:hover {
   color: var(--navy);
@@ -379,6 +414,11 @@ color: #fff
   margin-left: 0px;
   padding-left: 20px;
   border-left: 1px solid #2a4a64;
+
+  @media (max-width: 899px) {
+    padding-left: 0px;
+    border-left: none;
+  }
 }
 .toc-nav .column.old-boys li a {
   background-color: #0e3b5d;
@@ -389,6 +429,10 @@ color: #fff
 .spread {
   padding: 0 0 100px;
   border-bottom: 1px solid var(--line);
+
+  @media (max-width: 899px) {
+    padding-bottom: 0px;
+  }
 }
 @media (min-width: 900px) {
   /* each .spread scrolls its own content on desktop; the floating pager
@@ -404,7 +448,7 @@ color: #fff
      The footer/pager is permanently visible on this page (no real scrollable
      content to hide it during), so this needs to exactly clear its height. */
   #page-01 {
-    padding-bottom: 129px !important;
+    padding-bottom: 80px !important;
   }
 }
 /* Old Boys' News section (pages 19-26) */
@@ -1955,6 +1999,16 @@ dt {
   margin-bottom: 1.2rem;
   padding: 0.4rem 0;
 }
+
+@media (max-width: 899px) {
+  .academia-nav,
+  .arts-nav,
+  .sport-nav,
+  .events-nav {
+    display: none !important;
+  }
+}
+
 .events-nav-group {
   margin: 0 0 0.5rem;
   font-family: "Roboto", sans-serif;
@@ -2160,7 +2214,7 @@ dt {
 
   background-color: #eaebec;
   width: 100vw;
-  height: 140px;
+  height: 80px;
 
   /* desktop: overlays the content instead of reserving space for it — no
      padding-bottom hack needed on the sections. Starts slid fully below
@@ -2168,6 +2222,14 @@ dt {
      within 300px of the bottom of the CURRENT spread. */
   transform: translate(-50%, 100%);
   transition: transform 0.3s ease;
+
+  @media (max-width: 599px) {
+    padding: 0 0px;
+
+    .slide-nav {
+      padding: 17px 30px 40px 30px;
+    }
+  }
 }
 .mobile-pager.near-end {
   transform: translate(-50%, 0);
@@ -2313,6 +2375,11 @@ dt {
   color: #fff;
   font-family: "Constantia", sans-serif;
   font-size: 1rem;
+}
+@media (max-width: 899px) {
+  .footer {
+    display: none;
+  }
 }
 
 /* ---------- photo gallery lightbox ---------- */
