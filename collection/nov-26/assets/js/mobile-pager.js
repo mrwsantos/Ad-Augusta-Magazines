@@ -89,6 +89,21 @@
 	// down at the bottom pager bar.
 	var menuToggle = document.querySelector('.menu-toggle');
 	var mobileMq = window.matchMedia('(max-width: 899px)');
+
+	// the pager-info label mirrors the menu's own open/closed state (set via
+	// aria-expanded on .menu-toggle by header-nav.js) rather than tracking
+	// clicks itself, so it stays correct no matter how the menu was closed
+	// (outside click, Escape, a nav link, or the toc-nav-close button).
+	var infoEl = document.getElementById('pagerInfo');
+	if (infoEl && menuToggle) {
+		var updateInfo = function () {
+			var open = menuToggle.getAttribute('aria-expanded') === 'true';
+			infoEl.textContent = open ? 'CLOSE MENU ( - )' : 'EXPAND MENU (+)';
+		};
+		updateInfo();
+		new MutationObserver(updateInfo).observe(menuToggle, { attributes: true, attributeFilter: ['aria-expanded'] });
+	}
+
 	toggle.addEventListener('click', function (e) {
 		e.stopPropagation();
 		if (mobileMq.matches && menuToggle) {

@@ -339,9 +339,13 @@ color: #fff
   font-size: 2.5rem;
   line-height: 1;
   cursor: pointer;
+
+  @media (min-width: 900px) {
+    display: none;
+  }
 }
 .toc-nav-close:hover {
-  color: #fff;
+  color: var(--line);
 }
 .toc-nav a:hover {
   color: var(--navy);
@@ -650,9 +654,11 @@ color: #fff
   margin: 0 0 1em;
 }
 .article-columns h3 {
-  font-size: 18px;
+  font-size: 21px;
   color: var(--navy);
   margin: 1.2em 0 10px;
+  text-transform: uppercase;
+  font-family: "constantia", serif;
 }
 
 /* two article blocks side by side inside a masthead-grid would be too narrow
@@ -1704,8 +1710,9 @@ dt {
   font-size: 16px;
 }
 .sport-layout h3 {
+  font-size: 21px;
   text-transform: uppercase;
-  font-size: 20px;
+  font-family: "constantia", serif;
 }
 
 .sport-nav {
@@ -1797,8 +1804,9 @@ dt {
   font-size: 16px;
 }
 .academia-layout h3 {
+  font-size: 21px;
   text-transform: uppercase;
-  font-size: 20px;
+  font-family: "constantia", serif;
 }
 
 .academia-nav {
@@ -1894,8 +1902,9 @@ dt {
   font-size: 16px;
 }
 .arts-layout h3 {
+  font-size: 21px;
   text-transform: uppercase;
-  font-size: 20px;
+  font-family: "constantia", serif;
 }
 
 .arts-nav {
@@ -1987,8 +1996,9 @@ dt {
   font-size: 16px;
 }
 .events-layout h3 {
+  font-size: 21px;
   text-transform: uppercase;
-  font-size: 20px;
+  font-family: "constantia", serif;
 }
 
 .events-nav {
@@ -2317,20 +2327,32 @@ dt {
   cursor: pointer;
   width: 200px;
   margin: 0 auto;
+
+  @media (max-width: 899px) {
+    padding-top: 5px !important;
+  }
 }
 .pager-num {
+  font-size: 0.8rem;
   font-weight: 700;
-  font-size: 16px;
+  color: #454547;
+  margin-top: 0.2rem;
 }
 .pager-sep {
   font-size: 0.8rem;
-  transform: translateY(5px);
+  transform: translateY(12px);
   color: var(--navy);
+
+  @media (max-width: 899px) {
+    font-size: 0.6rem;
+    transform: translateY(5px);
+  }
 }
 .pager-name {
   display: block;
-  font-size: 16px;
+  font-size: 18px;
   font-family: "Constantia", sans-serif;
+  font-weight: 500;
   color: var(--navy);
   max-width: 46vw;
   overflow: hidden;
@@ -2344,7 +2366,8 @@ dt {
     font-size: 24px;
   }
 
-  .pager-name{
+  .pager-info,
+  .pager-name {
     display: none;
   }
 }
@@ -2356,6 +2379,13 @@ dt {
   line-height: 1.15;
   width: 100%;
   transform: translateY(-5px);
+
+  .pager-info {
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: #454547;
+    margin-top: 0.5rem;
+  }
 }
 .pager-page-wrapper {
   display: flex;
