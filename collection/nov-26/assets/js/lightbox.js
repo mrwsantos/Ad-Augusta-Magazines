@@ -139,7 +139,7 @@
 		figImg.src = el.currentSrc || el.src;
 		figImg.alt = el.alt || '';
 		var cap = el.getAttribute('data-caption') || '';
-		figCap.textContent = cap;
+		figCap.innerHTML = cap;
 		figCap.hidden = !cap;
 		counter.textContent = (idx + 1) + ' / ' + items.length;
 		var multi = items.length > 1;

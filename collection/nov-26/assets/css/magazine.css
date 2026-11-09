@@ -52,6 +52,10 @@ h3 {
 
 h3 {
   font-family: "Roboto", Georgia, serif;
+
+  a {
+/* text-decoration: none !important; */
+  }
 }
 
 a {
@@ -1461,7 +1465,8 @@ dd {
 
 #page-02 .masthead-grid {
   @media (max-width: 899px) {
-        grid-template-columns: 1fr !important;
+      display: flex !important;
+      flex-direction: column !important;
   }
 }
 
@@ -1487,7 +1492,7 @@ dd {
   @media (max-width: 899px) {
     max-width: 100vw;
     width: 100vw;
-    margin-left: -28px !important;
+    margin-left: -19px !important;
   }
 }
 .promo-card img {
@@ -1559,6 +1564,52 @@ dd {
 .promo-card--parallax-milford.desk-on {
   aspect-ratio: 0.95 / 1;
   max-height: 50vh;
+}
+
+/* ad-page: a standalone interstitial ad slide inserted between two real
+   pages. It's a plain .spread (so the desktop horizontal slider and
+   mobile document flow both already handle it for free, including
+   prev/next on desktop) but deliberately has no #page-NN id, so it's
+   invisible to the TOC menu and the mobile-pager's page list/numbering
+   (both keyed off PAGES, not off "every .spread").
+
+   The ad image itself is pinned with background-attachment: fixed - it
+   stays visually still while the page scrolls past/over it. This also
+   works correctly on desktop even though .spread scrolls independently
+   (not the window): a fixed background is always anchored to the
+   viewport, not to whichever element happens to be scrolling, so it
+   looks the same either way. */
+.ad-page{
+ @media (min-width: 900px) {
+  transform: translateY(50px) !important;
+  padding-bottom: 0 !important;
+}
+}
+.ad-bg {
+  max-width: 1240px;
+  margin: 0 auto;
+  height: 100vh;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  position: relative;
+
+   @media (min-width: 900px) {
+  height: 85vh;
+
+}
+}
+.ad-bg .promo-label {
+  /* overlaid inside the image area itself, anchored to its top edge */
+position:sticky; top: 150px;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.4);
+  transition: opacity 0.3s ease;
+
+   @media (min-width: 900px) {
+  display: none !important;
+}
 }
 
 /* Extra scroll room below a parallax ad that sits at the end of the
@@ -2611,7 +2662,7 @@ img:first-child{
   transform: translateY(0px);
   
   @media (max-width: 899px) {
-    transform: translateY(-5px);
+    transform: translateY(-9px);
   }
 
   .pager-info {
@@ -2715,7 +2766,7 @@ html.lb-open {
      the viewport bottom, so they never move out of the way). Capping the
      caption's own height and scrolling the overflow keeps it inside its
      slot no matter how long the text is. */
-  max-height: 4.5rem;
+  /* max-height: 6.5rem; */
   overflow-y: auto;
   flex-shrink: 0;
   color: #e6ecf3;
@@ -2723,6 +2774,15 @@ html.lb-open {
   font-size: var(--fs-body);
   line-height: 1.5;
   text-align: center;
+
+  @media (min-width: 900px) {
+     max-height: 5.5rem;
+
+  }
+
+  a{
+    color: var(--gold-light);
+  }
 }
 .lb-count {
   position: absolute;
@@ -2879,6 +2939,19 @@ html.lb-open {
 }
 }
 
+#page-26 .photo-grid-wrap{
+   @media (min-width: 640px) {
+  grid-template-columns: repeat(3, 1fr);
+
+  img:first-child {
+   grid-column: span 2;
+  }
+
+  img:nth-child(4) {
+   grid-column: span 2;
+  }
+}
+}
 #page-26 .photo-grid-wrap .promo-card,
 #page-26 .photo-grid-wrap img {
   height: 100%;

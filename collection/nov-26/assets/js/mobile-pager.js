@@ -136,13 +136,25 @@
 
 		var main = document.querySelector('main');
 		var desktopMq = window.matchMedia('(min-width: 900px)');
+		// every .spread under main, including unlisted interstitial ad
+		// pages that sit between real pages but aren't in PAGES/sections
+		var allSlides = main ? Array.prototype.slice.call(main.querySelectorAll(':scope > .spread')) : [];
 
 		function computeActiveIndex() {
 			// desktop: horizontal slider, the window itself never scrolls
 			if (desktopMq.matches && main) {
 				var w = main.clientWidth || 1;
 				var i = Math.round(main.scrollLeft / w);
-				return Math.max(0, Math.min(sections.length - 1, i));
+				i = Math.max(0, Math.min(allSlides.length - 1, i));
+				// raw slide position counts ad pages too, so it can't be
+				// used as a sections index directly - walk back to the
+				// nearest real page and keep showing its number/title
+				// while an ad page is the active slide
+				for (var j = i; j >= 0; j--) {
+					var idx = sections.indexOf(allSlides[j]);
+					if (idx !== -1) return idx;
+				}
+				return 0;
 			}
 			var active = 0;
 			for (var i = 0; i < sections.length; i++) {

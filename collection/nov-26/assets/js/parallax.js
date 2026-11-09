@@ -14,6 +14,7 @@
 			current: 0,
 			active: false,
 			deskOn: card.classList.contains('desk-on'), // opt-in: keep running past the mobile breakpoint
+			spread: card.closest('.spread'), // desktop's own independently-scrolling slide container
 		};
 	}).filter(function (item) { return item.img; });
 
@@ -54,6 +55,18 @@
 			// smoothly from a standstill instead of jumping in.
 			var eased = clamp((raw - START_AT) / (1 - START_AT), 0, 1);
 			var target = clamp(eased * SPEED, 0, 1);
+
+			// On desktop each .spread scrolls independently, so a card can
+			// already sit high up in the viewport the instant its page is
+			// freshly opened (scrollTop 0) - raw/target above would already
+			// be non-zero then, showing an already-panned crop before the
+			// page itself has been scrolled at all. Force target back to 0
+			// until the page's own scroll has moved a little, so arriving
+			// at a page always shows the ad's clean, un-panned top crop.
+			if (!isMobile && item.spread) {
+				var spreadProgress = clamp(item.spread.scrollTop / 80, 0, 1);
+				target *= spreadProgress;
+			}
 
 			// Ease the visible position toward the target instead of
 			// snapping straight to it, so the pan trails scroll with a
