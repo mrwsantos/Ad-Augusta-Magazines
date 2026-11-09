@@ -1494,7 +1494,43 @@ dd {
     width: 100vw;
     margin-left: -19px !important;
   }
+
+  &.gold-sponsor {
+    border: 2px solid var(--gold);  
+    padding: 0 5px 5px 0;
+    border-radius: 0px;
+    border-radius: 0px;
+
+   
+    .promo-label {
+      background-color: var(--gold);
+      color: #fff;
+      
+       position: relative;
+    margin-top: -2px;
+    display: block;
+    width: fit-content;
+
+    }
+  }
+  &.silver-sponsor {
+    border: 2px solid #ccc;
+    padding: 0 5px 5px 0;
+    border-radius: 0px;
+
+  .promo-label {
+     position: relative;
+    margin-top: -2px;
+    display: block;
+    width: fit-content;
+    
+    background-color: #ccc;
+    color: #fff;
+    }
+  }
 }
+
+
 .promo-card img {
   width: 100%;
 }
