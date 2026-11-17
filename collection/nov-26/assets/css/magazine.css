@@ -1602,26 +1602,31 @@ dd {
   max-height: 50vh;
 }
 
-/* ad-page: a standalone interstitial ad slide inserted between two real
+/* promo-page: a standalone interstitial ad slide inserted between two real
    pages. It's a plain .spread (so the desktop horizontal slider and
    mobile document flow both already handle it for free, including
    prev/next on desktop) but deliberately has no #page-NN id, so it's
    invisible to the TOC menu and the mobile-pager's page list/numbering
    (both keyed off PAGES, not off "every .spread").
 
-   The ad image itself is pinned with background-attachment: fixed - it
-   stays visually still while the page scrolls past/over it. This also
+   Named promo-* rather than ad-* (like promo-card/promo-label) because
+   browser ad-blocker cosmetic filters hide elements by class/id
+   substring match, and "ad-" is exactly the kind of generic fragment
+   those filter lists target.
+
+   The promo image itself is pinned with background-attachment: fixed -
+   it stays visually still while the page scrolls past/over it. This also
    works correctly on desktop even though .spread scrolls independently
    (not the window): a fixed background is always anchored to the
    viewport, not to whichever element happens to be scrolling, so it
    looks the same either way. */
-.ad-page{
+.promo-page{
  @media (min-width: 900px) {
   transform: translateY(50px) !important;
   padding-bottom: 0 !important;
 }
 }
-.ad-bg {
+.promo-bg {
   max-width: 1240px;
   margin: 0 auto;
   height: 100vh;
@@ -1630,13 +1635,14 @@ dd {
   background-repeat: no-repeat;
   background-attachment: fixed;
   position: relative;
+  display: block !important;
 
    @media (min-width: 900px) {
   height: 85vh;
 
 }
 }
-.ad-bg .promo-label {
+.promo-bg .promo-label {
   /* overlaid inside the image area itself, anchored to its top edge */
 position:sticky; top: 150px;
   color: #fff;

@@ -1,11 +1,11 @@
 (function () {
-	// .ad-bg uses background-size: contain, so depending on the viewport's
+	// .promo-bg uses background-size: contain, so depending on the viewport's
 	// own aspect ratio the photo can be letterboxed vertically (blank space
 	// above/below it, centered) - the promo-label is meant to sit right at
 	// the photo's own top edge, not the box's, so that gap has to be
 	// measured against each image's real dimensions and recalculated
 	// whenever the viewport (and therefore the box) changes size.
-	var boxes = document.querySelectorAll('.ad-bg');
+	var boxes = document.querySelectorAll('.promo-bg');
 	if (!boxes.length) return;
 
 	var items = Array.prototype.map.call(boxes, function (bg) {
