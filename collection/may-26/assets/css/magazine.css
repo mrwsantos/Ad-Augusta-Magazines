@@ -60,6 +60,7 @@ a {
 img {
   /* width: 100%; */
   max-width: 100%;
+  height: auto;
   display: block;
   filter: contrast(0.95) saturate(0.6);
   -webkit-filter: contrast(0.95) saturate(0.6);
@@ -548,6 +549,14 @@ color: #fff
   width: 100%;
   object-fit: cover;
   object-position: top;
+}
+/* no mobile cap existed here before width/height attrs made the real
+   (often portrait) ratio apply immediately - crop to a sane banner
+   height instead of the full native photo height on narrow screens */
+@media (max-width: 899px) {
+  .hero-photo {
+    aspect-ratio: 4/3;
+  }
 }
 @media (min-width: 900px) {
   .hero-photo {

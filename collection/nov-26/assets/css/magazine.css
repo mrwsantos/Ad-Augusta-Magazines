@@ -64,6 +64,7 @@ a {
 img {
   /* width: 100%; */
   max-width: 100%;
+  height: auto;
   display: block;
   /* filter: contrast(0.95) saturate(0.6);
   -webkit-filter: contrast(0.95) saturate(0.6); */
@@ -564,6 +565,14 @@ img {
   width: 100%;
   object-fit: cover;
   object-position: top;
+}
+/* no mobile cap existed here before width/height attrs made the real
+   (often portrait) ratio apply immediately - crop to a sane banner
+   height instead of the full native photo height on narrow screens */
+@media (max-width: 899px) {
+  .hero-photo {
+    aspect-ratio: 4/3;
+  }
 }
 @media (min-width: 900px) {
   .hero-photo {
@@ -1573,6 +1582,19 @@ dd {
 
 .promo-card img {
   width: 100%;
+}
+@media (max-width: 899px) {
+  /* plain (non-parallax) ads go full-bleed width on mobile by design, but
+     with no height limit a tall/portrait ad creative renders at its full
+     native height edge-to-edge - cap it and show the whole ad scaled down
+     instead of letting it dominate the screen */
+  .promo-card:not(.promo-card--parallax) img {
+    max-height: 60vh;
+    width: auto;
+    max-width: 100%;
+    margin: 0 auto;
+    object-fit: contain;
+  }
 }
 .promo-card a {
   display: block;
