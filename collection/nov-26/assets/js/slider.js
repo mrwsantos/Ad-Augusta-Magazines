@@ -9,6 +9,23 @@
 
 	function headerOffset() { return header ? header.offsetHeight : 0; }
 
+	// mobile: a single pre-computed smooth-scroll target can land short if
+	// a lazy-loaded image between the old and new scroll position grows
+	// into its real height mid-scroll (it has no reserved space while
+	// unloaded) - re-settle toward the target whenever the page's height
+	// changes while a navigation is still in flight, so one click lands
+	// correctly instead of needing a second click on the same anchor once
+	// everything's finished loading.
+	var navTarget = null;
+	var navStopTimer = null;
+	function settleScroll() {
+		if (!navTarget) return;
+		var top = navTarget.getBoundingClientRect().top + window.scrollY - headerOffset();
+		window.scrollTo({ top: top, behavior: 'smooth' });
+	}
+	var bodyResize = window.ResizeObserver ? new ResizeObserver(settleScroll) : null;
+	if (bodyResize) bodyResize.observe(document.body);
+
 	function currentIndex() {
 		if (isDesktop()) {
 			var w = main.clientWidth || 1;
@@ -27,10 +44,12 @@
 		slides[i].scrollTop = 0;
 		if (isDesktop()) {
 			main.scrollTo({ left: i * main.clientWidth, behavior: 'smooth' });
-		} else {
-			var top = slides[i].getBoundingClientRect().top + window.scrollY - headerOffset();
-			window.scrollTo({ top: top, behavior: 'smooth' });
+			return;
 		}
+		navTarget = slides[i];
+		settleScroll();
+		clearTimeout(navStopTimer);
+		navStopTimer = setTimeout(function () { navTarget = null; }, 1200);
 	}
 
 	// also reset scroll-to-top when the slide changes via trackpad/swipe on

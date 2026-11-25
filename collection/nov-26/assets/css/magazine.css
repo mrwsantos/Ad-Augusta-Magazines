@@ -327,10 +327,20 @@ img {
   text-decoration: none;
   color: var(--muted);
 }
+
+.toc-nav a:hover {
+  color: var(--navy);
+}
+@media (max-width: 899px) {
+  .toc-nav {
+    display: none;
+  }
+}
+
 .toc-nav-close {
-  position: fixed;
-  top: 0px;
-  right: 0px;
+  position: absolute;
+  top: 20px;
+  right: 30px;
   z-index: 11;
 
   width: 40px;
@@ -348,17 +358,47 @@ img {
     display: none;
   }
 }
+
 .toc-nav-close:hover {
   color: var(--line);
 }
-.toc-nav a:hover {
-  color: var(--navy);
-}
-@media (max-width: 899px) {
-  .toc-nav {
-    display: none;
+
+.back-to-archive {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 20px;
+
+  position: absolute;
+  top:30px;left: 30px;
+  &:hover{
+    color: var(--gold);
   }
 }
+.desk-back-to-archive {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 20px;
+
+  position: absolute;
+  top:40px;
+  right: 130px;
+  /* top:30px;left: 30px; */
+  display: none;
+
+  &:hover{
+    color: var(--gold);
+  }
+}
+.header-wrapper.opened .desk-back-to-archive {
+  display: block;
+}
+
 
 .toc-nav .column {
   flex: 1;
@@ -1540,6 +1580,13 @@ dd {
 @media (max-width: 899px) {
   .promo-card.promo-card--parallax {
     position: relative;
+    /* kept inside its .wrap like any other content - override the plain
+       .promo-card rule above, which escapes the wrap's padding to go
+       full-bleed; these should respect the page's normal max-width and
+       side padding instead. */
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0 !important;
   }
   .promo-card.promo-card--parallax img {
     position: absolute;
@@ -1560,7 +1607,9 @@ dd {
      than the ad's own native ratio (Milford's is ~0.77/1) at every width,
      guaranteeing the same pan room everywhere; max-height just stops it
      getting too tall on the wider end of mobile. Tune per ad below. */
-  .promo-card--parallax-milford {
+  .promo-card--parallax-milford,
+  .promo-card--parallax-jbwere,
+  .promo-card--parallax-barfoot {
     aspect-ratio: 0.95 / 1;
     max-height: 50vh;
   }
@@ -1575,17 +1624,12 @@ dd {
 
 }
 .promo-card.promo-card--parallax.desk-on {
-  /* on mobile the base .promo-card rule forces width:100vw, which already
-     keeps it full-width; desktop has no such rule, so width is "auto" here
-     - combined with aspect-ratio + max-height that makes the browser
-     derive WIDTH from the (now-capped) height instead of filling the
-     1240px .wrap, shrinking the card. Pin the width explicitly so it
-     always fills its container instead. */
-  width: 100vw;
-
-  @media (min-width: 900px) {
-    width: 100%;
-  }
+  /* without this, aspect-ratio + max-height make the browser derive WIDTH
+     from the (now-capped) height instead of filling the wrap, shrinking
+     the card. Pin it to 100% so it always fills its container - the
+     1240px .wrap, same as the rest of the page's content - at every
+     breakpoint. */
+  width: 100%;
 }
 .promo-card.promo-card--parallax.desk-on img {
   position: absolute;
@@ -1597,7 +1641,9 @@ dd {
   object-position: 50% 0%;
   will-change: object-position;
 }
-.promo-card--parallax-milford.desk-on {
+.promo-card--parallax-milford.desk-on,
+.promo-card--parallax-jbwere.desk-on,
+.promo-card--parallax-barfoot.desk-on {
   aspect-ratio: 0.95 / 1;
   max-height: 50vh;
 }
@@ -1660,6 +1706,14 @@ position:sticky; top: 150px;
    on desktop too. */
 .wrap--parallax-pad {
   padding-bottom: 50vh !important;
+}
+/* Same need, for a parallax ad placed directly in its .article instead of
+   inside a .wrap (a full-bleed interstitial rather than one boxed to the
+   1240px content width) - margin-bottom on the card itself rather than
+   padding on a wrapper, applied only when it's the trailing element so an
+   ad with another ad after it doesn't double up. */
+.promo-card.promo-card--parallax:last-child {
+  margin-bottom: 50vh;
 }
 /* a masonry-style grid of ads with no fixed per-card max-width - each card
    keeps its own native aspect ratio (no forced height), and multi-column
