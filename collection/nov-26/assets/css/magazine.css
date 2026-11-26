@@ -1588,7 +1588,7 @@ dd {
      with no height limit a tall/portrait ad creative renders at its full
      native height edge-to-edge - cap it and show the whole ad scaled down
      instead of letting it dominate the screen */
-  .promo-card:not(.promo-card--parallax) img {
+  .promo-card:not(.promo-card--parallax.desk-on) img {
     max-height: 60vh;
     width: auto;
     max-width: 100%;
@@ -1599,75 +1599,56 @@ dd {
 .promo-card a {
   display: block;
 }
-@media (max-width: 899px) {
-  .promo-card.promo-card--parallax {
-    position: relative;
-    /* kept inside its .wrap like any other content - override the plain
-       .promo-card rule above, which escapes the wrap's padding to go
-       full-bleed; these should respect the page's normal max-width and
-       side padding instead. */
-    width: 100%;
-    max-width: 100%;
-    margin-left: 0 !important;
-  }
-  .promo-card.promo-card--parallax img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: 50% 0%;
-    will-change: object-position;
-  }
 
-  /* Per-ad sizing: aspect-ratio drives the crop window instead of a plain
-     height, because a plain vh height stays fixed while the card's width
-     shrinks with the screen - on narrow phones that leaves almost no
-     vertical overflow for the image to pan through, so the slide becomes
-     invisible below ~400px wide. aspect-ratio keeps the window flatter
-     than the ad's own native ratio (Milford's is ~0.77/1) at every width,
-     guaranteeing the same pan room everywhere; max-height just stops it
-     getting too tall on the wider end of mobile. Tune per ad below. */
-  .promo-card--parallax-milford,
-  .promo-card--parallax-jbwere,
-  .promo-card--parallax-barfoot {
-    aspect-ratio: 0.95 / 1;
-    max-height: 50vh;
-  }
-}
-
-/* desk-on: opt-in modifier for a parallax ad that marks, on top of its
-   normal mobile behaviour above, that it should also run on desktop -
-   same rules, just not gated behind the mobile media query. */
+/* promo-card--parallax ads: without .desk-on, a parallax-flagged card is
+   just a plain .promo-card (no effect at all) - desk-on is the one switch
+   that turns the effect on, the same way at every breakpoint. The image
+   itself does not move; it's pinned to the viewport like .promo-bg (the
+   full-page interstitial ad) so it stays still while the page scrolls
+   past/over it and the content does the revealing, instead of panning via
+   JS like the old implementation. */
 .promo-card.promo-card--parallax.desk-on {
   position: relative;
-    max-height: 100vh;
-
-}
-.promo-card.promo-card--parallax.desk-on {
-  /* without this, aspect-ratio + max-height make the browser derive WIDTH
-     from the (now-capped) height instead of filling the wrap, shrinking
-     the card. Pin it to 100% so it always fills its container - the
-     1240px .wrap, same as the rest of the page's content - at every
-     breakpoint. */
+  /* kept inside its .wrap like any other content - override the plain
+     .promo-card rule above, which escapes the wrap's padding to go
+     full-bleed; these should respect the page's normal max-width and side
+     padding instead. */
   width: 100%;
+  max-width: 100%;
+  margin-left: 0 !important;
+  height: 100vh;
+  overflow: hidden;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
+@media (min-width: 900px) {
+  .promo-card.promo-card--parallax.desk-on {
+    height: 85vh;
+  }
+}
+/* the <img> stays in the markup for its src/alt text only (accessibility,
+   crawlers) - the background-image below (set per ad) is what's actually
+   shown. */
 .promo-card.promo-card--parallax.desk-on img {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 50% 0%;
-  will-change: object-position;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
 }
-.promo-card--parallax-milford.desk-on,
-.promo-card--parallax-jbwere.desk-on,
+.promo-card.promo-card--parallax.desk-on a {
+  position: absolute;
+  inset: 0;
+}
+.promo-card--parallax-milford.desk-on {
+  background-image: url("../../publication-web-resources/image/Pg_76_Milford_ad.png");
+}
+.promo-card--parallax-jbwere.desk-on {
+  background-image: url("../../publication-web-resources/image/Pg_79_JBWere_ad.webp");
+}
 .promo-card--parallax-barfoot.desk-on {
-  aspect-ratio: 0.95 / 1;
-  max-height: 50vh;
+  background-image: url("../../publication-web-resources/image/Pg_61_New_Barfoot_ad.webp");
 }
 
 /* promo-page: a standalone interstitial ad slide inserted between two real
@@ -1722,21 +1703,6 @@ position:sticky; top: 150px;
 }
 }
 
-/* Extra scroll room below a parallax ad that sits at the end of the
-   page - without it there's nowhere left to scroll for the pan to
-   finish revealing the image. Not mobile-gated: a desk-on ad needs this
-   on desktop too. */
-.wrap--parallax-pad {
-  padding-bottom: 50vh !important;
-}
-/* Same need, for a parallax ad placed directly in its .article instead of
-   inside a .wrap (a full-bleed interstitial rather than one boxed to the
-   1240px content width) - margin-bottom on the card itself rather than
-   padding on a wrapper, applied only when it's the trailing element so an
-   ad with another ad after it doesn't double up. */
-.promo-card.promo-card--parallax:last-child {
-  margin-bottom: 50vh;
-}
 /* a masonry-style grid of ads with no fixed per-card max-width - each card
    keeps its own native aspect ratio (no forced height), and multi-column
    layout packs them tightly instead of leaving gaps like a strict grid
