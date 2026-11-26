@@ -1539,7 +1539,12 @@ dd {
        (100vw, escaping the wrap's side padding), and that's what these
        should do too on mobile. */
     height: 100vh;
-    overflow: hidden;
+    /* no overflow: hidden here - iOS Safari has a long-standing WebKit bug
+       where background-attachment: fixed simply fails to paint when the
+       same element also has overflow: hidden. Not needed anyway: the
+       background is already clipped to the border-box by default, and
+       the <img>/<a>/.promo-label children below are all inset:0/1px so
+       none of them can overflow this box either. */
     background-position: center;
     background-size: contain;
     background-repeat: no-repeat;
@@ -1576,7 +1581,8 @@ dd {
 .promo-card.promo-card--parallax.desk-on {
   position: relative;
   height: 100vh;
-  overflow: hidden;
+  /* see note on the mobile rule above: no overflow: hidden, it breaks
+     background-attachment: fixed on iOS Safari and isn't needed. */
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
