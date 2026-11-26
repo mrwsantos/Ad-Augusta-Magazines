@@ -1588,7 +1588,7 @@ dd {
      with no height limit a tall/portrait ad creative renders at its full
      native height edge-to-edge - cap it and show the whole ad scaled down
      instead of letting it dominate the screen */
-  .promo-card:not(.promo-card--parallax.desk-on) img {
+  .promo-card:not(.promo-card--parallax) img {
     max-height: 60vh;
     width: auto;
     max-width: 100%;
@@ -1600,22 +1600,56 @@ dd {
   display: block;
 }
 
-/* promo-card--parallax ads: without .desk-on, a parallax-flagged card is
-   just a plain .promo-card (no effect at all) - desk-on is the one switch
-   that turns the effect on, the same way at every breakpoint. The image
-   itself does not move; it's pinned to the viewport like .promo-bg (the
-   full-page interstitial ad) so it stays still while the page scrolls
-   past/over it and the content does the revealing, instead of panning via
-   JS like the old implementation. */
+/* promo-card--parallax ads: the effect is on by default on mobile; .desk-on
+   is an opt-in modifier that extends the same effect past the mobile
+   breakpoint, onto desktop too. The image itself does not move; it's
+   pinned to the viewport like .promo-bg (the full-page interstitial ad) so
+   it stays still while the page scrolls past/over it and the content does
+   the revealing, instead of panning via JS like the old implementation. */
+@media (max-width: 899px) {
+  .promo-card.promo-card--parallax {
+    position: relative;
+    /* width/max-width/margin-left intentionally not set here - the plain
+       .promo-card mobile rule above already takes these full-bleed
+       (100vw, escaping the wrap's side padding), and that's what these
+       should do too on mobile. */
+    height: 100vh;
+    overflow: hidden;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
+  /* the <img> stays in the markup for its src/alt text only (accessibility,
+     crawlers) - the background-image below (set per ad) is what's
+     actually shown. */
+  .promo-card.promo-card--parallax img {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+  }
+  .promo-card.promo-card--parallax a {
+    position: absolute;
+    inset: 0;
+  }
+  /* overlaid on the image itself now (not a plain strip above it), so it
+     needs its own contrast treatment. position: absolute (not sticky) -
+     promo-bg-label.js re-clamps its "top" to the box's own rectangle on
+     every scroll frame, so it tracks the (fixed) image's top edge but can
+     never render past the box's own bottom edge the way a plain sticky
+     offset could right as it scrolls out; it also fades out once it gets
+     close to the top of the screen. */
+  .promo-card.promo-card--parallax .promo-label {
+    position: absolute;
+    top: 0;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.4);
+    transition: opacity 0.3s ease;
+  }
+}
 .promo-card.promo-card--parallax.desk-on {
   position: relative;
-  /* kept inside its .wrap like any other content - override the plain
-     .promo-card rule above, which escapes the wrap's padding to go
-     full-bleed; these should respect the page's normal max-width and side
-     padding instead. */
-  width: 100%;
-  max-width: 100%;
-  margin-left: 0 !important;
   height: 100vh;
   overflow: hidden;
   background-position: center;
@@ -1624,13 +1658,15 @@ dd {
   background-attachment: fixed;
 }
 @media (min-width: 900px) {
+  /* past the mobile breakpoint, stop going full-bleed and sit back inside
+     the page's normal container like any other content. */
   .promo-card.promo-card--parallax.desk-on {
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0 !important;
     height: 85vh;
   }
 }
-/* the <img> stays in the markup for its src/alt text only (accessibility,
-   crawlers) - the background-image below (set per ad) is what's actually
-   shown. */
 .promo-card.promo-card--parallax.desk-on img {
   position: absolute;
   width: 1px;
@@ -1641,13 +1677,22 @@ dd {
   position: absolute;
   inset: 0;
 }
-.promo-card--parallax-milford.desk-on {
-  background-image: url("../../publication-web-resources/image/Pg_76_Milford_ad.png");
+.promo-card.promo-card--parallax.desk-on .promo-label {
+  position: sticky;
+  top: 0;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.4);
+  transition: opacity 0.3s ease;
+  transform: translateY(-1px);
+  display: inline-block;
 }
-.promo-card--parallax-jbwere.desk-on {
+.promo-card--parallax-milford {
+  background-image: url("../../publication-web-resources/image/Pg_80_Milford_ad.webp");
+}
+.promo-card--parallax-jbwere {
   background-image: url("../../publication-web-resources/image/Pg_79_JBWere_ad.webp");
 }
-.promo-card--parallax-barfoot.desk-on {
+.promo-card--parallax-barfoot {
   background-image: url("../../publication-web-resources/image/Pg_61_New_Barfoot_ad.webp");
 }
 
